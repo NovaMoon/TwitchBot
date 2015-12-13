@@ -212,7 +212,7 @@ data = ""
 while True:
     try:
         data = data+con.recv(1024).decode('UTF-8')
-        data_split = re.split(r"[~\r\n]+", data)
+        data_split = re.split(r"[\r\n]+", data)
         data = data_split.pop()
 
         for line in data_split:
