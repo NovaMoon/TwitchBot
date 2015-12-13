@@ -11,9 +11,9 @@ sys.dont_write_bytecode = True
 
 HOST = "irc.twitch.tv"                                  # the Twitch IRC server
 PORT = 6667                                             # always use port 6667!
-NICK = "GarboBot"                                       # your Twitch username, lowercase
-PASS = "oauth:avg7hkxg7cosq6io1s197z22drxzv7"           # your Twitch OAuth token
-CHAN = "#stinkycheeseone890"                            # the channel you want to join
+NICK =                                                   # your Twitch username, lowercase
+PASS =                                                  # your Twitch OAuth token
+CHAN =                                                  # the channel you want to join
 RATE = (100/30)                                         # messages per second
 
 # --------------------------------------------- Start Twitch API ---------------------------------------------
