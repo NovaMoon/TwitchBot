@@ -11,3 +11,5 @@ So far it only lets you manually create commands and you can use global variable
 Chatlogger
 
 !add command
+
+timeout links
