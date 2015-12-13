@@ -2,54 +2,20 @@ import socket
 import re
 from threading import Timer
 import sys
-import os
-import time
-import datetime
-from bs4 import UnicodeDammit
-import requests
 sys.dont_write_bytecode = True
 
 HOST = "irc.twitch.tv"                                  # the Twitch IRC server
 PORT = 6667                                             # always use port 6667!
-NICK =                                                   # your Twitch username, lowercase
-PASS =                                                  # your Twitch OAuth token
-CHAN =                                                  # the channel you want to join
+NICK = "GarboBot"                                       # your Twitch username, lowercase
+PASS = "-"           # your Twitch OAuth token
+CHAN = "-"                            # the channel you want to join
 RATE = (100/30)                                         # messages per second
+PATT = [r'bieber']
+
 
 # --------------------------------------------- Start Twitch API ---------------------------------------------
 
-root = 'https://api.twitch.tv/kraken/'
-
-
-def _apiget(path, root=root):
-    r = requests.get(root+path, timeout=4)
-    r.raise_for_status()
-
-    try:
-        return r.json()
-    except Exception as e:
-        print(r.status_code, r.reason)
-        print(e)
-
-
-def get(path='', key=None):
-    return _apiget(path) if not key else _apiget(path)[key]
-
-
-def is_streaming(channel):
-    return get('streams/%s' % channel, 'stream') is not None
-
-
-def get_chatters(channel):
-    r = requests.get('https://tmi.twitch.tv/group/user/%s/chatters' % channel, timeout=4)
-    r.raise_for_status()
-    return r.json()
-
-
-def get_chatters_list(channel):
-    ctrs = get_chatters(channel)
-    return ctrs['chatters']['admins'] + ctrs['chatters']['global_mods'] + ctrs['chatters']['moderators'] + ctrs['chatters']['staff'] + ctrs['chatters']['viewers']
-
+# Not sure if needed or not in the future
 
 # --------------------------------------------- End Twitch API ---------------------------------------------
 
@@ -88,6 +54,8 @@ def join_channel(chan):
 
 def part_channel(chan):
     con.send(bytes('PART %s\r\n' % chan, 'UTF-8'))
+
+
 # --------------------------------------------- End Functions ------------------------------------------------------
 
 
@@ -124,6 +92,7 @@ def parse_message(msg):
                    '!memes': command_memes}
         if msg[0] in options:
             options[msg[0]]()
+
 
 # --------------------------------------------- End Helper Functions -----------------------------------------------
 
@@ -208,7 +177,6 @@ send_nick(NICK)
 join_channel(CHAN)
 
 data = ""
-
 while True:
     try:
         data = data+con.recv(1024).decode('UTF-8')
@@ -229,6 +197,8 @@ while True:
                     parse_message(message)
 
                     print(sender + ": " + message)
+
+
 
 
     except socket.error:
