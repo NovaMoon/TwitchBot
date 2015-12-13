@@ -9,4 +9,5 @@ So far it only lets you manually create commands and you can use global variable
 # TODO
 
 Chatlogger
+
 !add command
