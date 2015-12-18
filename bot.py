@@ -2,37 +2,12 @@ import socket
 import re
 from threading import Timer
 import sys
+import cfg
 import requests
+import cd
+
 sys.dont_write_bytecode = True
 
-HOST = "irc.twitch.tv"                                  # the Twitch IRC server
-PORT = 6667                                             # always use port 6667!
-NICK = "GarboBot"                                       # your Twitch username, lowercase
-PASS = ""           # your Twitch OAuth token
-CHAN = ""                              # the channel you want to join
-RATE = (100/30)                                         # messages per second
-PATT = []
-
-
-# --------------------------------------------- Start Twitch API ---------------------------------------------
-
-# Not sure if needed or not in the future
-
-# --------------------------------------------- End Twitch API ---------------------------------------------
-
-# --------------------------------------------- Start Global Variables  ---------------------------------------------
-cdtest = 0
-cduptime = 0
-cdcommands = 0
-cdgarbo = 0
-cdtagface = 0
-cdfaq = 0
-cdmemes = 0
-cdkirby = 0
-cduuptime = 0
-cdimportant = 0
-cdwr = 0
-# --------------------------------------------- End Global Variables  ---------------------------------------------
 
 # ---------------------------------- Start Functions ----------------------------------------------------
 
@@ -99,138 +74,176 @@ def parse_message(msg):
                    '!uuptime': command_uuptime,
                    '!important': command_important,
                    '!wr-k3': command_wr_k3,
-                   '!wr-boshy': command_wr_b}
+                   '!wr-boshy': command_wr_b,
+                   '!wr-nangtrue': command_wr_nangt,
+                   '!wr-nangbad': command_wr_nangbad}
         if msg[0] in options:
             options[msg[0]]()
 
-worldrekky = {'k3': 'Kamillia 3 Any% WR: 6h:20m:04s by Stinkycheeseone890', 'boshy': 'I Wanna Be The Boshy Any% WR: 32m 24s by witwix'}
+
+worldrekky = {'k3': 'Kamillia 3 Any% WR: 6h:20m:04s by Stinkycheeseone890',
+              'boshy': 'I Wanna Be The Boshy Any% WR: 32m 24s by witwix',
+              'nangtrue': 'NANG true end WR: 1h:38m:17s by Stinkycheeseone890',
+              'nangbad': 'NANG bad end WR: 34m:27s by Maxinator235'}
+
 
 # --------------------------------------------- End Helper Functions -----------------------------------------------
 
 
 # --------------------------------------------- Start Command Functions --------------------------------------------
-def command_wr_k3():
-    global cdwr
-    if cdwr==0:
-        send_message(CHAN, worldrekky.get('k3'))
-        cdwr=1
+def command_wr_nangbad():
+    if cd.cdwr == 0:
+        send_message(cfg.CHAN, worldrekky.get('nangbad'))
+        cd.cdwr = 1
+
         def testchange():
-            global cdwr
-            cdwr=0
+            cd.cdwr = 0
+
+        t = Timer(10.0, testchange)
+        t.start()
+
+
+def command_wr_nangt():
+    if cd.cdwr == 0:
+        send_message(cfg.CHAN, worldrekky.get('nangtrue'))
+        cd.cdwr = 1
+
+        def testchange():
+            cd.cdwr = 0
+
+        t = Timer(10.0, testchange)
+        t.start()
+
+
+def command_wr_k3():
+    if cd.cdwr == 0:
+        send_message(cfg.CHAN, worldrekky.get('k3'))
+        cd.cdwr = 1
+
+        def testchange():
+            cd.cdwr = 0
+
         t = Timer(10.0, testchange)
         t.start()
 
 
 def command_wr_b():
-    global cdwr
-    if cdwr==0:
-        send_message(CHAN, worldrekky.get('boshy'))
-        cdwr=1
+    if cd.cdwr == 0:
+        send_message(cfg.CHAN, worldrekky.get('boshy'))
+        cd.cdwr = 1
+
         def testchange():
-            global cdwr
-            cdwr=0
+            cd.cdwr = 0
+
         t = Timer(10.0, testchange)
         t.start()
 
+
 def command_uptime():
-    global cduptime
-    if cduptime==0:
-        send_message(CHAN, '420am69pm')
-        cduptime=1
+    if cd.cduptime == 0:
+        send_message(cfg.CHAN, '420am69pm')
+        cd.cduptime = 1
+
         def testchange():
-            global cduptime
-            cduptime=0
+            cd.cduptime = 0
+
         t = Timer(30.0, testchange)
         t.start()
+
 
 def command_commands():
-    global cdcommands
-    if cdcommands==0:
-        send_message(CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
-        cdcommands=1
+    if cd.cdcommands == 0:
+        send_message(cfg.CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
+        cd.cdcommands = 1
+
         def testchange():
-            global cdcommands
-            cdcommands=0
+            cd.cdcommands = 0
+
         t = Timer(30.0, testchange)
         t.start()
+
 
 def command_garbo():
-    global cdgarbo
-    if cdgarbo==0:
-        send_message(CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
-        cdgarbo=1
+    if cd.cdgarbo == 0:
+        send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
+        cd.cdgarbo = 1
+
         def testchange():
-            global cdgarbo
-            cdgarbo=0
+            cd.cdgarbo = 0
+
         t = Timer(30.0, testchange)
         t.start()
+
 
 def command_tag():
-    global cdtagface
-    if cdtagface==0:
-        send_message(CHAN, 'HungryTag')
-        cdtagface=1
+    if cd.cdtagface == 0:
+        send_message(cfg.CHAN, 'HungryTag')
+        cd.cdtagface = 1
+
         def testchange():
-            global cdtagface
-            cdtagface=0
+            cd.cdtagface = 0
+
         t = Timer(30.0, testchange)
         t.start()
 
+
 def command_faq():
-    global cdfaq
-    if cdfaq==0:
-        send_message(CHAN, 'Kappa')
-        cdfaq=1
+    if cd.cdfaq == 0:
+        send_message(cfg.CHAN, 'Kappa')
+        cd.cdfaq = 1
+
         def testchange():
-            global cdfaq
-            cdfaq=0
+            cd.cdfaq = 0
+
         t = Timer(30.0, testchange)
         t.start()
 
 
 def command_memes():
-    global cdmemes
-    if cdmemes==0:
-        send_message(CHAN, ' ˙͜ >˙ ‿☞')
-        cdmemes=1
+    if cd.cdmemes == 0:
+        send_message(cfg.CHAN, ' ˙͜ >˙ ‿☞')
+        cd.cdmemes = 1
+
         def testchange():
-            global cdmemes
-            cdmemes=0
+            cd.cdmemes = 0
+
         t = Timer(30.0, testchange)
         t.start()
 
 
 def command_kirbyskip():
-    global cdkirby
-    if cdkirby==0:
-        send_message(CHAN, 'Go fuck yourself!!! 4Head')
-        cdkirby=1
+    if cd.cdkirby == 0:
+        send_message(cfg.CHAN, 'Go fuck yourself!!! 4Head')
+        cd.cdkirby = 1
+
         def testchange():
-            global cdkirby
-            cdkirby=0
+            cd.cdkirby = 0
+
         t = Timer(30.0, testchange)
         t.start()
+
 
 def command_uuptime():
-    global cduuptime
-    if cduuptime==0:
-        r=requests.get('https://decapi.me/twitch/uptime.php?channel=stinkycheeseone890')
-        send_message(CHAN, 'This channel has been live for: %s' %r.text)
-        cduuptime=1
+    if cd.cduuptime == 0:
+        r = requests.get('https://decapi.me/twitch/uptime.php?channel=stinkycheeseone890')
+        send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
+        cd.cduuptime = 1
+
         def testchange():
-            global cduuptime
-            cduuptime=0
+            cd.cduuptime = 0
+
         t = Timer(30.0, testchange)
         t.start()
 
+
 def command_important():
-    global cdimportant
-    if cdimportant==0:
-        send_message(CHAN, 'b r e a k f a s t https://i.imgur.com/IjnhSOH.png')
-        cdimportant=1
+    if cd.cdimportant == 0:
+        send_message(cfg.CHAN, 'b r e a k f a s t https://i.imgur.com/IjnhSOH.png')
+        cd.cdimportant = 1
+
         def testchange():
-            global cdimportant
-            cdimportant=0
+            cd.cdimportant = 0
+
         t = Timer(30.0, testchange)
         t.start()
 
@@ -238,18 +251,18 @@ def command_important():
 # --------------------------------------------- End Command Functions ----------------------------------------------
 
 con = socket.socket()
-con.connect((HOST, PORT))
+con.connect((cfg.HOST, cfg.PORT))
 
-send_pass(PASS)
-send_nick(NICK)
-join_channel(CHAN)
+send_pass(cfg.PASS)
+send_nick(cfg.NICK)
+join_channel(cfg.CHAN)
 
 data = ""
 
 while True:
     try:
-        data = data+con.recv(1024).decode('UTF-8')
-        data_split = re.split(r'[\r\n]+', data)
+        data = data + con.recv(1024).decode('UTF-8')
+        data_split = re.split(r"[\r\n]+", data)
         data = data_split.pop()
         for line in data_split:
             line = str.rstrip(line)
@@ -263,14 +276,12 @@ while True:
                     sender = get_sender(line[0])
                     message = get_message(line)
                     parse_message(message)
-                    for word in PATT:
+                    for word in cfg.PATT:
                         if word in message:
-                            send_message(CHAN, '/ban %s' % sender)
+                            send_message(cfg.CHAN, '/ban %s' % sender)
+                            send_message(cfg.CHAN, 'Contact a mod if this ban was in error')
 
                     print(sender + ": " + message)
-
-
-
     except socket.error:
         print("Socket died")
 
