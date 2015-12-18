@@ -5,6 +5,7 @@ import sys
 import cfg
 import requests
 import cd
+import spl
 
 sys.dont_write_bytecode = True
 
@@ -280,7 +281,10 @@ while True:
                         if word in message:
                             send_message(cfg.CHAN, '/ban %s' % sender)
                             send_message(cfg.CHAN, 'Contact a mod if this ban was in error')
-
+                    for spoiler in spl.SPLR:
+                        if spoiler in message:
+                            send_message(cfg.CHAN, '/ban %s' % sender)
+                            send_message(cfg.CHAN, 'No Star Wars spoilers allowed.')
                     print(sender + ": " + message)
     except socket.error:
         print("Socket died")
