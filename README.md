@@ -7,6 +7,7 @@ So far it only lets you manually create commands and you can use global variable
 # New
 
 permaban links
+
 !uptime command
 
 
