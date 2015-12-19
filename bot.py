@@ -127,18 +127,20 @@ def command_wr(msg):
                 send_message(cfg.CHAN, 'No game found.')
                 return(None)
             if (catreq==1):
-                for cat in cjs['data']:
-                    cats.append(cat['name'])
-                    cats[-1]=str.lower(cats[-1])
                 catname=''
                 for cat in cats:
-                    if msg[2] in cat:
-                        catname=cat
-                        catpos=cats.index(cat)
-                if not catname:
-                    catname=cjs['data'][catpos]['name']
-            else:
-                catname=cjs['data'][catpos]['name']
+                    if msg[2] in cats:
+                        catname=msg[2]
+                        catpos=cats.index(msg[2])
+                    else:
+                        if msg[2] in cat:
+                            while not catname:
+                                catname=cat
+                                catpos=cats.index(cat)
+                        if not catname:
+                            catname=cjs['data'][catpos]['name']
+                        else:
+                            catname=cjs['data'][catpos]['name']
             records=cjs['data'][catpos]['links'][3]['uri']
             reclink=requests.get(records)
             recjs=json.loads(reclink.text)

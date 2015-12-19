@@ -33,9 +33,14 @@ def command_wr(msg):
             cats[-1]=str.lower(cats[-1])
         catname=''
         for cat in cats:
-            if msg[2] in cat:
-                catname=cat
-                catpos=cats.index(cat)
+            if msg[2] in cats:
+                catname=msg[2]
+                catpos=cats.index(msg[2])
+            else:
+                if msg[2] in cat:
+                    while not catname:
+                        catname=cat
+                        catpos=cats.index(cat)
         if not catname:
             catname=cjs['data'][0]['name']
     else:
