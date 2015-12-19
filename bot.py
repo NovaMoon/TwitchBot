@@ -101,12 +101,12 @@ worldrekky = {'k3': 'Kamillia 3 Any% WR: 6h:20m:04s by Stinkycheeseone890',
 
 def command_wr(msg):
     if cd.cdwr==0:
-        if len(msg)>=2:
+        if len(msg)>=3:
             cats=[]
             catreq=1
             catpos=0
             try:
-                msg[2]
+                msg[3]
             except:
                 catreq=0
             game=msg[1]

@@ -7,7 +7,7 @@ def command_wr(msg):
     catreq=1
     catpos=0
     try:
-        msg[2]
+        msg[3]
     except:
         catreq=0
     game=msg[1]
@@ -57,5 +57,5 @@ def command_wr(msg):
     playername=pjs['data']['names']['international']
     #pprint.pprint(cjs['data'][catpos])
     print('The record in %s %s is held by %s with %s' % (gamename, catname, playername, timename))
-msg=['!wr', 'kamilia3', 'any%']
+msg=['!wr', 'kamilia3']
 command_wr(msg)
