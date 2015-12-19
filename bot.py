@@ -1,16 +1,21 @@
-import socket
-import re
-from threading import Timer
-import sys
-import cfg
-import requests
+#!/usr/bin/python3.5
 import cd
+import cfg
+import re
+import requests
+import socket
+import sys
+from threading import Timer
 import spl
+import os
+import time
+import datetime
 
 sys.dont_write_bytecode = True
 
 
 # ---------------------------------- Start Functions ----------------------------------------------------
+
 
 
 def send_pong(msg):
@@ -74,13 +79,15 @@ def parse_message(msg):
                    '!kirbyskip': command_kirbyskip,
                    '!uuptime': command_uuptime,
                    '!important': command_important,
-                   '!wr-k3': command_wr_k3,
-                   '!wr-boshy': command_wr_b,
-                   '!wr-nangtrue': command_wr_nangt,
-                   '!wr-nangbad': command_wr_nangbad}
+                   '!k3': command_wr_k3,
+                   '!boshy': command_wr_b,
+                   '!nangtrue': command_wr_nangt,
+                   '!nangbad': command_wr_nangbad}
         if msg[0] in options:
             options[msg[0]]()
 
+
+# --------------------------------------------- End Helper Functions -----------------------------------------------
 
 worldrekky = {'k3': 'Kamillia 3 Any% WR: 6h:20m:04s by Stinkycheeseone890',
               'boshy': 'I Wanna Be The Boshy Any% WR: 32m 24s by witwix',
@@ -88,10 +95,9 @@ worldrekky = {'k3': 'Kamillia 3 Any% WR: 6h:20m:04s by Stinkycheeseone890',
               'nangbad': 'NANG bad end WR: 34m:27s by Maxinator235'}
 
 
-# --------------------------------------------- End Helper Functions -----------------------------------------------
-
-
 # --------------------------------------------- Start Command Functions --------------------------------------------
+
+
 def command_wr_nangbad():
     if cd.cdwr == 0:
         send_message(cfg.CHAN, worldrekky.get('nangbad'))
@@ -250,7 +256,11 @@ def command_important():
 
 
 # --------------------------------------------- End Command Functions ----------------------------------------------
+# --------------------------------------------- Start Chatlogger ---------------------------------------------------
 
+
+
+# --------------------------------------------- End Chatlogger ----------------------------------------------
 con = socket.socket()
 con.connect((cfg.HOST, cfg.PORT))
 
@@ -259,6 +269,20 @@ send_nick(cfg.NICK)
 join_channel(cfg.CHAN)
 
 data = ""
+
+logpath = 'C:/Users/NovaMoon/PycharmProjects/TwitchBot/'
+if not os.path.isfile(logpath + "log.txt"):
+    print("Creating log file for" + cfg.CHAN)
+    if not os.path.isdir(logpath): os.makedirs(logpath)
+
+
+def formatdate():
+    now = datetime.date.today()
+    return "[" + " ".join([now.strftime("%A")[0:3], now.strftime("%B")[0:3], now.strftime("%d"),
+                           datetime.datetime.now().strftime("%H:%M:%S"), time.tzname[0], now.strftime("%Y")]) + "]"
+
+
+now = formatdate()
 
 while True:
     try:
@@ -279,13 +303,21 @@ while True:
                     parse_message(message)
                     for word in cfg.PATT:
                         if word in message:
-                            send_message(cfg.CHAN, '/ban %s' % sender)
-                            send_message(cfg.CHAN, 'Contact a mod if this ban was in error')
+                            send_message(cfg.CHAN, '/ban  %s ' % sender)
+                            send_message(cfg.CHAN, 'banned for being a shithead 4Head')
                     for spoiler in spl.SPLR:
                         if spoiler in message:
                             send_message(cfg.CHAN, '/timeout %s' % sender)
                             send_message(cfg.CHAN, 'No Star Wars spoilers allowed.')
                     print(sender + ": " + message)
+
+                    with open(logpath + 'log.txt', 'a+') as f:
+                        f.write('%s %s: %s\n"' % (now, sender, message))
+
+
+
+
+
     except socket.error:
         print("Socket died")
 
