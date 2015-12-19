@@ -86,10 +86,10 @@ def parse_message(msg):
                    '!nangbad': command_wr_nangbad,
                    '!wr': command_wr}
         if msg[0] in options:
-            if msg[0] is 'wr':
+            if '!wr' in [ms.0]:
                 options[msg[0]](msg)
             else:
-                options[msg[0]]()
+                option[msg[0]]()
 
 
 # --------------------------------------------- End Helper Functions -----------------------------------------------
