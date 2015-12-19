@@ -80,10 +80,6 @@ def parse_message(msg):
                    '!kirbyskip': command_kirbyskip,
                    '!uuptime': command_uuptime,
                    '!important': command_important,
-                   '!k3': command_wr_k3,
-                   '!boshy': command_wr_b,
-                   '!nangtrue': command_wr_nangt,
-                   '!nangbad': command_wr_nangbad,
                    '!wr': command_wr}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
@@ -101,54 +97,6 @@ worldrekky = {'k3': 'Kamillia 3 Any% WR: 6h:20m:04s by Stinkycheeseone890',
 
 
 # --------------------------------------------- Start Command Functions --------------------------------------------
-
-
-def command_wr_nangbad():
-    if cd.cdwr == 0:
-        send_message(cfg.CHAN, worldrekky.get('nangbad'))
-        cd.cdwr = 1
-
-        def testchange():
-            cd.cdwr = 0
-
-        t = Timer(10.0, testchange)
-        t.start()
-
-
-def command_wr_nangt():
-    if cd.cdwr == 0:
-        send_message(cfg.CHAN, worldrekky.get('nangtrue'))
-        cd.cdwr = 1
-
-        def testchange():
-            cd.cdwr = 0
-
-        t = Timer(10.0, testchange)
-        t.start()
-
-
-def command_wr_k3():
-    if cd.cdwr == 0:
-        send_message(cfg.CHAN, worldrekky.get('k3'))
-        cd.cdwr = 1
-
-        def testchange():
-            cd.cdwr = 0
-
-        t = Timer(10.0, testchange)
-        t.start()
-
-
-def command_wr_b():
-    if cd.cdwr == 0:
-        send_message(cfg.CHAN, worldrekky.get('boshy'))
-        cd.cdwr = 1
-
-        def testchange():
-            cd.cdwr = 0
-
-        t = Timer(10.0, testchange)
-        t.start()
 
 
 def command_wr(msg):
@@ -169,10 +117,10 @@ def command_wr(msg):
             except:
                 send_message(cfg.CHAN, 'No game found.')
                 return None
-            gamename=rjs['data'][0]['names']['international']
-            category=rjs['data'][0]['links'][4]['uri']
-            catlink=requests.get(category)
-            cjs=json.loads(catlink.text)
+            gamename = rjs['data'][0]['names']['international']
+            category = rjs['data'][0]['links'][4]['uri']
+            catlink = requests.get(category)
+            cjs = json.loads(catlink.text)
             try:
                 cjs['data'][0]['name']
             except:
@@ -209,7 +157,8 @@ def command_wr(msg):
             send_message(cfg.CHAN, 'The record in %s, %s is held by %s with %s' % (gamename, catname, playername, timename))
         else:
             send_message(cfg.CHAN, 'Specify a game.')
-        cd.cdwr=1
+        cd.cdwr = 1
+
         def testchange():
             cd.cdwr = 0
 
