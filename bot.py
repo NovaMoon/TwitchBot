@@ -26,6 +26,7 @@ def send_message(chan, msg):
     con.send(bytes('PRIVMSG %s :%s\r\n' % (chan, msg), 'UTF-8'))
 
 
+
 def send_nick(nick):
     con.send(bytes('NICK %s\r\n' % nick, 'UTF-8'))
 
