@@ -3,7 +3,7 @@ import requests
 import datetime
 def command_wr(msg):
     game=msg[1]
-    r=requests.get('http://www.speedrun.com/api/v1/games?name=%s' % game)
+    r=requests.get('http://www.speedrun.com/api/v1/games?name=kamilia3' % game)
     rjs=json.loads(r.text)
     try:
         rjs['data'][0]['names']['international']
