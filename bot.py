@@ -90,12 +90,6 @@ def parse_message(msg):
 
 # --------------------------------------------- End Helper Functions -----------------------------------------------
 
-worldrekky = {'k3': 'Kamillia 3 Any% WR: 6h:20m:04s by Stinkycheeseone890',
-              'boshy': 'I Wanna Be The Boshy Any% WR: 32m 24s by witwix',
-              'nangtrue': 'NANG true end WR: 1h:38m:17s by Stinkycheeseone890',
-              'nangbad': 'NANG bad end WR: 34m:27s by Maxinator235'}
-
-
 # --------------------------------------------- Start Command Functions --------------------------------------------
 
 def command_wr(msg):
@@ -128,7 +122,7 @@ def command_wr(msg):
             if catreq == 1:
                 for cat in cjs['data']:
                     cats.append(cat['name'])
-                    cats[-1]=str.lower(cats[-1])
+                    cats[-1] = str.lower(cats[-1])
                 catname = ''
                 if msg[2] in cats:
                     catname = msg[2]
