@@ -27,7 +27,6 @@ def send_message(chan, msg):
     con.send(bytes('PRIVMSG %s :%s\r\n' % (chan, msg), 'UTF-8'))
 
 
-
 def send_nick(nick):
     con.send(bytes('NICK %s\r\n' % nick, 'UTF-8'))
 
@@ -158,9 +157,153 @@ def command_wr(msg):
         t = Timer(10.0, testchange)
         t.start()
 
+def command_wr_nangt():
+    if cd.cdwr == 0:
+        send_message(cfg.CHAN, worldrekky.get('nangtrue'))
+        cd.cdwr = 1
+
+        def testchange():
+            cd.cdwr = 0
+
+        t = Timer(10.0, testchange)
+        t.start()
+
+
+def command_wr_k3():
+    if cd.cdwr == 0:
+        send_message(cfg.CHAN, worldrekky.get('k3'))
+        cd.cdwr = 1
+
+        def testchange():
+            cd.cdwr = 0
+
+        t = Timer(10.0, testchange)
+        t.start()
+
+
+def command_wr_b():
+    if cd.cdwr == 0:
+        send_message(cfg.CHAN, worldrekky.get('boshy'))
+        cd.cdwr = 1
+
+        def testchange():
+            cd.cdwr = 0
+
+        t = Timer(10.0, testchange)
+        t.start()
+
+
+def command_uptime():
+    if cd.cduptime == 0:
+        send_message(cfg.CHAN, '420am69pm')
+        cd.cduptime = 1
+
+        def testchange():
+            cd.cduptime = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_commands():
+    if cd.cdcommands == 0:
+        send_message(cfg.CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
+        cd.cdcommands = 1
+
+        def testchange():
+            cd.cdcommands = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_garbo():
+    if cd.cdgarbo == 0:
+        send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
+        cd.cdgarbo = 1
+
+        def testchange():
+            cd.cdgarbo = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_tag():
+    if cd.cdtagface == 0:
+        send_message(cfg.CHAN, 'HungryTag')
+        cd.cdtagface = 1
+
+        def testchange():
+            cd.cdtagface = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_faq():
+    if cd.cdfaq == 0:
+        send_message(cfg.CHAN, 'Kappa')
+        cd.cdfaq = 1
+
+        def testchange():
+            cd.cdfaq = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_memes():
+    if cd.cdmemes == 0:
+        send_message(cfg.CHAN, ' ˙͜ >˙ ‿☞')
+        cd.cdmemes = 1
+
+        def testchange():
+            cd.cdmemes = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_kirbyskip():
+    if cd.cdkirby == 0:
+        send_message(cfg.CHAN, 'Go fuck yourself!!! 4Head')
+        cd.cdkirby = 1
+
+        def testchange():
+            cd.cdkirby = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_uuptime():
+    if cd.cduuptime == 0:
+        r = requests.get('https://decapi.me/twitch/uptime.php?channel=stinkycheeseone890')
+        send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
+        cd.cduuptime = 1
+
+        def testchange():
+            cd.cduuptime = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_important():
+    if cd.cdimportant == 0:
+        send_message(cfg.CHAN, 'b r e a k f a s t https://i.imgur.com/IjnhSOH.png')
+        cd.cdimportant = 1
+
+        def testchange():
+            cd.cdimportant = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
 
 
 # --------------------------------------------- End Command Functions ----------------------------------------------
+
 
 con = socket.socket()
 con.connect((cfg.HOST, cfg.PORT))
@@ -171,7 +314,7 @@ join_channel(cfg.CHAN)
 
 data = ""
 
-logpath = 'C:/Users/NovaMoon/PycharmProjects/TwitchBot/'
+logpath = '/home/novamoon/twitch/chat/stinkycheeseone890/'
 if not os.path.isfile(logpath + "log.txt"):
     print("Creating log file for" + cfg.CHAN)
     if not os.path.isdir(logpath): os.makedirs(logpath)
@@ -208,7 +351,7 @@ while True:
                             send_message(cfg.CHAN, 'banned for being a shithead 4Head')
                     for spoiler in spl.SPLR:
                         if spoiler in message:
-                            send_message(cfg.CHAN, '/timeout %s' % sender)
+                            send_message(cfg.CHAN, '/timeout %s ' % sender)
                             send_message(cfg.CHAN, 'No Star Wars spoilers allowed.')
                     print(sender + ": " + message)
 
