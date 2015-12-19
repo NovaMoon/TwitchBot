@@ -64,5 +64,5 @@
 
 
 
-SPLR=['kylo','kills father, han', 'kills father han', 'han\'s son',
+SPLR=[' han ','kylo','kills father, han', 'kills father han', 'han\'s son',
       'ren\'s father', 'kylo\'s father', 'son, kills han']
