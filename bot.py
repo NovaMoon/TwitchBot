@@ -80,7 +80,8 @@ def parse_message(msg):
                    '!kirbyskip': command_kirbyskip,
                    '!uuptime': command_uuptime,
                    '!important': command_important,
-                   '!wr': command_wr}
+                   '!wr': command_wr,
+                   '!candy': command_candy}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg)
@@ -93,11 +94,12 @@ def parse_message(msg):
 # --------------------------------------------- Start Command Functions --------------------------------------------
 
 def command_wr(msg):
-    if cd.cdwr == 0:
-        if len(msg) >= 3:
-            cats = []
-            catreq = 1
-            catpos = 0
+    if cd.cdwr==0:
+        if len(msg)>=3:
+            cats=[]
+            catreq=1
+            catpos=0
+            account=1
             try:
                 msg[3]
             except:
@@ -272,6 +274,16 @@ def command_important():
 
         t = Timer(30.0, testchange)
         t.start()
+def command_candy():
+    if cd.cdcandy == 0:
+        send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' %chr(127852))
+        cd.cdcandy = 1
+
+        def testchange():
+            cd.cdimportant = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
 
 
 # --------------------------------------------- End Command Functions ----------------------------------------------
@@ -323,7 +335,7 @@ while True:
                             send_message(cfg.CHAN, 'banned for being a shithead 4Head')
                     for spoiler in spl.SPLR:
                         if spoiler in message:
-                            send_message(cfg.CHAN, '/timeout %s ' % sender)
+                            send_message(cfg.CHAN, '/timeout %s 6000' % sender)
                             send_message(cfg.CHAN, 'No Star Wars spoilers allowed.')
                     print(sender + ": " + message)
 
