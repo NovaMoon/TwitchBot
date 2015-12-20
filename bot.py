@@ -324,7 +324,7 @@ while True:
                             send_message(cfg.CHAN, 'banned for being a shithead 4Head')
                     for spoiler in spl.SPLR:
                         if spoiler in message:
-                            send_message(cfg.CHAN, '/timeout %s ' % sender)
+                            send_message(cfg.CHAN, '/timeout %s 6000' % sender)
                             send_message(cfg.CHAN, 'No Star Wars spoilers allowed.')
                     print(sender + ": " + message)
 
