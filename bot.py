@@ -69,7 +69,7 @@ def get_message(msg):
     return result
 
 
-def parse_message(msg):
+def parse_message(msg): # add new commands here
     if len(msg) >= 1:
         msg = msg.split(' ')
         options = {'!uptime': command_uptime,
@@ -93,7 +93,7 @@ def parse_message(msg):
 # --------------------------------------------- End Helper Functions -----------------------------------------------
 
 # --------------------------------------------- Start Command Functions --------------------------------------------
-
+# Command functions
 def command_wr(msg):
     if cd.cdwr == 0:
         if len(msg) >= 3:
@@ -204,7 +204,7 @@ join_channel(cfg.CHAN)
 
 data = ""
 
-logpath = '/home/novamoon/twitch/chat/stinkycheeseone890/'
+logpath = 'path/to/your/directory/'
 if not os.path.isfile(logpath + "log.txt"):
     print("Creating log file for" + cfg.CHAN)
     if not os.path.isdir(logpath): os.makedirs(logpath)
@@ -247,7 +247,7 @@ while True:
 
                     with open(logpath + 'log.txt', 'a+') as f:
                         f.write('%s %s: %s\n"' % (now, sender, UnicodeDammit(message).unicode_markup.encode(
-                            'utf8')))  # encode characters like ( •ᴗ•) and wont crash the bot
+                            'utf8')))  # encode characters like ( •ᴗ•) so the bot doesnt crash
 
 
 
