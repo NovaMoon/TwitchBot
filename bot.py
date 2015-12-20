@@ -154,7 +154,19 @@ def command_wr(msg):
             playerlink = wr['players'][0]['uri']
             player = requests.get(playerlink)
             pjs = json.loads(player.text)
-            playername = pjs['data']['names']['international']
+            try:
+                pjs['data']['names']['international']
+            except:
+                account = 0
+            if account == 1:
+                playername = pjs['data']['names']['international']
+            else:
+                try:
+                    pjs['data']['name']
+                except:
+                    print('Error: Player doesn\'t exist.')
+                    return None
+                playername = pjs['data']['name']
             send_message(cfg.CHAN,
                          'The record in %s, %s is held by %s with %s' % (gamename, catname, playername, timename))
         else:
@@ -343,7 +355,8 @@ while True:
                     print(sender + ": " + message)
 
                     with open(logpath + 'log.txt', 'a+') as f:
-                        f.write('%s %s: %s\n"' % (now, sender, UnicodeDammit(message).unicode_markup.encode('utf8')))
+                        f.write('%s %s: %s\n"' % (now, sender, UnicodeDammit(message).unicode_markup.encode(
+                            'utf8')))  # encode characters like ( •ᴗ•) and wont crash the bot
 
 
 
