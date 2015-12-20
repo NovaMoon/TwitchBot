@@ -11,6 +11,7 @@ import os
 import time
 import datetime
 import json
+from bs4 import UnicodeDammit
 
 sys.dont_write_bytecode = True
 
@@ -94,12 +95,12 @@ def parse_message(msg):
 # --------------------------------------------- Start Command Functions --------------------------------------------
 
 def command_wr(msg):
-    if cd.cdwr==0:
-        if len(msg)>=3:
-            cats=[]
-            catreq=1
-            catpos=0
-            account=1
+    if cd.cdwr == 0:
+        if len(msg) >= 3:
+            cats = []
+            catreq = 1
+            catpos = 0
+            account = 1
             try:
                 msg[3]
             except:
@@ -274,9 +275,11 @@ def command_important():
 
         t = Timer(30.0, testchange)
         t.start()
+
+
 def command_candy():
     if cd.cdcandy == 0:
-        send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' %chr(127852))
+        send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' % chr(127852))
         cd.cdcandy = 1
 
         def testchange():
@@ -340,7 +343,7 @@ while True:
                     print(sender + ": " + message)
 
                     with open(logpath + 'log.txt', 'a+') as f:
-                        f.write('%s %s: %s\n"' % (now, sender, message))
+                        f.write('%s %s: %s\n"' % (now, sender, UnicodeDammit(message).unicode_markup.encode('utf8')))
 
 
 
