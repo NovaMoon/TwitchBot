@@ -105,6 +105,7 @@ def command_wr(msg):
             cats=[]
             catreq=1
             catpos=0
+            account=1
             try:
                 msg[3]
             except:
@@ -127,20 +128,23 @@ def command_wr(msg):
                 send_message(cfg.CHAN, 'No game found.')
                 return(None)
             if (catreq==1):
+                for cat in cjs['data']:
+                    cats.append(cat['name'])
+                    cats[-1]=str.lower(cats[-1])
                 catname=''
-                for cat in cats:
-                    if msg[2] in cats:
+                if msg[2] in cats:
                         catname=msg[2]
                         catpos=cats.index(msg[2])
-                    else:
+                else:
+                    for cat in cats:
                         if msg[2] in cat:
                             while not catname:
                                 catname=cat
                                 catpos=cats.index(cat)
-                        if not catname:
-                            catname=cjs['data'][catpos]['name']
-                        else:
-                            catname=cjs['data'][catpos]['name']
+                    if not catname:
+                        catname=cjs['data'][catpos]['name']
+            else:
+                    catname=cjs['data'][catpos]['name']
             records=cjs['data'][catpos]['links'][3]['uri']
             reclink=requests.get(records)
             recjs=json.loads(reclink.text)
@@ -155,7 +159,19 @@ def command_wr(msg):
             playerlink=wr['players'][0]['uri']
             player=requests.get(playerlink)
             pjs=json.loads(player.text)
-            playername=pjs['data']['names']['international']
+            try:
+                pjs['data']['names']['international']
+            except:
+                account=0
+            if account == 1:
+                playername=pjs['data']['names']['international']
+            else:
+                try:
+                    pjs['data']['name']
+                except:
+                    print('Error: Player doesn\'t exist.')
+                    return(None)
+                playername=pjs['data']['name']
             send_message(cfg.CHAN, 'The record in %s, %s is held by %s with %s' % (gamename, catname, playername, timename))
         else:
             send_message(cfg.CHAN, 'Specify a game.')
