@@ -4,4 +4,4 @@ NICK = "garbobot"  # your Twitch username, lowercase
 PASS = "password"  # your Twitch OAuth token
 CHAN = "channel"  # the channel you want to join
 RATE = (100 / 30)  # messages per second
-PATT = [] # blacklisted wortds
+PATT = [r'imsge-igm.pw'] # blacklisted wortds
