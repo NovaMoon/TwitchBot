@@ -180,6 +180,16 @@ def command_wr(msg):
         t.start()
 
 
+def command_candy():
+    if cd.cdcandy == 0:
+        send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' % chr(127852))
+        cd.cdcandy = 1
+
+        def testchange():
+            cd.cdimportant = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
 
 
 # --------------------------------------------- End Command Functions ----------------------------------------------
