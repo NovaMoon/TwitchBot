@@ -1,14 +1,21 @@
 # Not-Another-Twitch-Chat-Bot
 
 
-Manually create commands, blacklist for words / links(permabans, timeout) cooldown for commands, !uptime function, chatlogger
+Manually assign commands in the code 
+
+Timeout/ban function
+
+!uptime function
+
+Logs the chat
 
 # New
 
-!wr "game" pulls the data from http://www.speedrun.com/ (currently only the standard category)
+!wr "game" pulls the data from the http://www.speedrun.com/ api!
 
 # TODO
 
+ALL THE THINGS!
 
 
 

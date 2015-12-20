@@ -90,14 +90,7 @@ def parse_message(msg):
 
 # --------------------------------------------- End Helper Functions -----------------------------------------------
 
-worldrekky = {'k3': 'Kamillia 3 Any% WR: 6h:20m:04s by Stinkycheeseone890',
-              'boshy': 'I Wanna Be The Boshy Any% WR: 32m 24s by witwix',
-              'nangtrue': 'NANG true end WR: 1h:38m:17s by Stinkycheeseone890',
-              'nangbad': 'NANG bad end WR: 34m:27s by Maxinator235'}
-
-
 # --------------------------------------------- Start Command Functions --------------------------------------------
-
 
 def command_wr(msg):
     if cd.cdwr==0:
@@ -109,10 +102,10 @@ def command_wr(msg):
             try:
                 msg[3]
             except:
-                catreq=0
-            game=msg[1]
-            r=requests.get('http://www.speedrun.com/api/v1/games?name=%s' % game)
-            rjs=json.loads(r.text)
+                catreq = 0
+            game = msg[1]
+            r = requests.get('http://www.speedrun.com/api/v1/games?name=%s' % game)
+            rjs = json.loads(r.text)
             try:
                 rjs['data'][0]['names']['international']
             except:
@@ -126,53 +119,42 @@ def command_wr(msg):
                 cjs['data'][0]['name']
             except:
                 send_message(cfg.CHAN, 'No game found.')
-                return(None)
-            if (catreq==1):
+                return None
+            if catreq == 1:
                 for cat in cjs['data']:
                     cats.append(cat['name'])
-                    cats[-1]=str.lower(cats[-1])
-                catname=''
+                    cats[-1] = str.lower(cats[-1])
+                catname = ''
                 if msg[2] in cats:
-                        catname=msg[2]
-                        catpos=cats.index(msg[2])
+                    catname = msg[2]
+                    catpos = cats.index(msg[2])
                 else:
                     for cat in cats:
                         if msg[2] in cat:
                             while not catname:
-                                catname=cat
-                                catpos=cats.index(cat)
+                                catname = cat
+                                catpos = cats.index(cat)
                     if not catname:
-                        catname=cjs['data'][catpos]['name']
+                        catname = cjs['data'][catpos]['name']
             else:
-                    catname=cjs['data'][catpos]['name']
-            records=cjs['data'][catpos]['links'][3]['uri']
-            reclink=requests.get(records)
-            recjs=json.loads(reclink.text)
+                catname = cjs['data'][catpos]['name']
+            records = cjs['data'][catpos]['links'][3]['uri']
+            reclink = requests.get(records)
+            recjs = json.loads(reclink.text)
             try:
                 recjs['data'][0]['runs'][0]['run']
             except:
-                send_message(cfg.CHAN, 'No runs found for %s, %s.' %(gamename, catname))
-                return(None)
-            wr=recjs['data'][0]['runs'][0]['run']
-            time=wr['times']['primary_t']
-            timename=str(datetime.timedelta(seconds=time))
-            playerlink=wr['players'][0]['uri']
-            player=requests.get(playerlink)
-            pjs=json.loads(player.text)
-            try:
-                pjs['data']['names']['international']
-            except:
-                account=0
-            if account == 1:
-                playername=pjs['data']['names']['international']
-            else:
-                try:
-                    pjs['data']['name']
-                except:
-                    print('Error: Player doesn\'t exist.')
-                    return(None)
-                playername=pjs['data']['name']
-            send_message(cfg.CHAN, 'The record in %s, %s is held by %s with %s' % (gamename, catname, playername, timename))
+                send_message(cfg.CHAN, 'No runs found for %s, %s.' % (gamename, catname))
+                return None
+            wr = recjs['data'][0]['runs'][0]['run']
+            time = wr['times']['primary_t']
+            timename = str(datetime.timedelta(seconds=time))
+            playerlink = wr['players'][0]['uri']
+            player = requests.get(playerlink)
+            pjs = json.loads(player.text)
+            playername = pjs['data']['names']['international']
+            send_message(cfg.CHAN,
+                         'The record in %s, %s is held by %s with %s' % (gamename, catname, playername, timename))
         else:
             send_message(cfg.CHAN, 'Specify a game.')
         cd.cdwr = 1
