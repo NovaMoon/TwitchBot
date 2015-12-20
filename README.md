@@ -11,7 +11,7 @@ Logs the chat
 
 # New
 
-!wr "game" pulls the data from the http://www.speedrun.com/ api!
+!wr "game" "category" pulls the data from the http://www.speedrun.com/ api!
 
 #HOW-TO
 
