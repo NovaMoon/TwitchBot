@@ -11,6 +11,7 @@ import os
 import time
 import datetime
 import json
+import simplejson
 from bs4 import UnicodeDammit
 
 sys.dont_write_bytecode = True
@@ -69,7 +70,7 @@ def get_message(msg):
     return result
 
 
-def parse_message(msg): # add new commands here
+def parse_message(msg):
     if len(msg) >= 1:
         msg = msg.split(' ')
         options = {'!uptime': command_uptime,
@@ -82,7 +83,8 @@ def parse_message(msg): # add new commands here
                    '!uuptime': command_uuptime,
                    '!important': command_important,
                    '!wr': command_wr,
-                   '!candy': command_candy}
+                   '!candy': command_candy,
+                   '!pb': command_pb}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg)
@@ -92,8 +94,20 @@ def parse_message(msg): # add new commands here
 
 # --------------------------------------------- End Helper Functions -----------------------------------------------
 
+# --------------------------------------------- Start Twitch API -----------------------------------------------
+
+response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
+readable = response.text
+chatlist = simplejson.loads(readable)
+chatters = chatlist['chatters']
+mods = chatters['moderators']
+plebs = chatters['viewers']
+
+# --------------------------------------------- End Twitch API -----------------------------------------------
+
 # --------------------------------------------- Start Command Functions --------------------------------------------
-# Command functions
+
+
 def command_wr(msg):
     if cd.cdwr == 0:
         if len(msg) >= 3:
@@ -176,7 +190,116 @@ def command_wr(msg):
         def testchange():
             cd.cdwr = 0
 
-        t = Timer(10.0, testchange)
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_uptime():
+    if cd.cduptime == 0:
+        send_message(cfg.CHAN, '420am69pm')
+        cd.cduptime = 1
+
+        def testchange():
+            cd.cduptime = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_commands():
+    if cd.cdcommands == 0:
+        send_message(cfg.CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
+        cd.cdcommands = 1
+
+        def testchange():
+            cd.cdcommands = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_garbo():
+    if cd.cdgarbo == 0:
+        send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
+        cd.cdgarbo = 1
+
+        def testchange():
+            cd.cdgarbo = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_tag():
+    if cd.cdtagface == 0:
+        send_message(cfg.CHAN, 'HungryTag')
+        cd.cdtagface = 1
+
+        def testchange():
+            cd.cdtagface = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_faq():
+    if cd.cdfaq == 0:
+        send_message(cfg.CHAN, 'Kappa')
+        cd.cdfaq = 1
+
+        def testchange():
+            cd.cdfaq = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_memes():
+    if cd.cdmemes == 0:
+        send_message(cfg.CHAN, ' ˙͜ >˙ ‿☞')
+        cd.cdmemes = 1
+
+        def testchange():
+            cd.cdmemes = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_kirbyskip():
+    if cd.cdkirby == 0:
+        send_message(cfg.CHAN, 'Go fuck yourself!!! 4Head')
+        cd.cdkirby = 1
+
+        def testchange():
+            cd.cdkirby = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_uuptime():
+    if cd.cduuptime == 0:
+        r = requests.get('https://decapi.me/twitch/uptime.php?channel=stinkycheeseone890')
+        send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
+        cd.cduuptime = 1
+
+        def testchange():
+            cd.cduuptime = 0
+
+        t = Timer(30.0, testchange)
+        t.start()
+
+
+def command_important():
+    if cd.cdimportant == 0:
+        send_message(cfg.CHAN, 'b r e a k f a s t https://i.imgur.com/IjnhSOH.png')
+        cd.cdimportant = 1
+
+        def testchange():
+            cd.cdimportant = 0
+
+        t = Timer(30.0, testchange)
         t.start()
 
 
@@ -186,13 +309,24 @@ def command_candy():
         cd.cdcandy = 1
 
         def testchange():
-            cd.cdimportant = 0
+            cd.cdcandy = 0
 
         t = Timer(30.0, testchange)
         t.start()
 
 
-# --------------------------------------------- End Command Functions ----------------------------------------------
+def command_pb():
+            if sender in mods:
+                send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
+            else:
+                if cd.cdpb == 0:
+                    send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
+                    cd.cdpb = 1
+
+            def cooldown():
+                cd.cdpb = 0
+            t = Timer(30.0, cooldown)
+            t.start()
 
 
 con = socket.socket()
@@ -204,7 +338,7 @@ join_channel(cfg.CHAN)
 
 data = ""
 
-logpath = 'path/to/your/directory/'
+logpath = '/home/novamoon/twitch/chat/stinkycheeseone890/'
 if not os.path.isfile(logpath + "log.txt"):
     print("Creating log file for" + cfg.CHAN)
     if not os.path.isdir(logpath): os.makedirs(logpath)
@@ -247,7 +381,7 @@ while True:
 
                     with open(logpath + 'log.txt', 'a+') as f:
                         f.write('%s %s: %s\n"' % (now, sender, UnicodeDammit(message).unicode_markup.encode(
-                            'utf8')))  # encode characters like ( •ᴗ•) so the bot doesnt crash
+                            'utf8')))  # encode characters like ( •ᴗ•) and wont crash the bot
 
 
 
