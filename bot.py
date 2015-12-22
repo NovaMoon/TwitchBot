@@ -84,7 +84,6 @@ def parse_message(msg):
                    '!important': command_important,
                    '!wr': command_wr,
                    '!candy': command_candy,
-                   '!sellout': command_sellout,
                    '!pb': command_pb}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
@@ -110,7 +109,6 @@ plebs = chatters['viewers']
 
 
 def command_wr(msg):
-    if cd.cdwr == 0:
         if len(msg) >= 3:
             cats = []
             catreq = 1
@@ -186,19 +184,16 @@ def command_wr(msg):
                          'The record in %s, %s is held by %s with %s' % (gamename, catname, playername, timename))
         else:
             send_message(cfg.CHAN, 'Specify a game.')
-        cd.cdwr = 1
 
-        def testchange():
-            cd.cdwr = 0
-
-        t = Timer(30.0, testchange)
-        t.start()
 
 
 def command_uptime():
-    if cd.cduptime == 0:
+    if sender in mods:
         send_message(cfg.CHAN, '420am69pm')
-        cd.cduptime = 1
+    else:
+        if cd.cduptime == 0:
+            send_message(cfg.CHAN, '420am69pm')
+            cd.cduptime = 1
 
         def testchange():
             cd.cduptime = 0
@@ -208,139 +203,156 @@ def command_uptime():
 
 
 def command_commands():
-    if cd.cdcommands == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
-        cd.cdcommands = 1
+    else:
+        if cd.cdcommands == 0:
+            send_message(cfg.CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
+            cd.cdcommands = 1
 
-        def testchange():
+        def cooldown():
             cd.cdcommands = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_garbo():
-    if cd.cdgarbo == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
-        cd.cdgarbo = 1
+    else:
+        if cd.cdgarbo == 0:
+            send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
+            cd.cdgarbo = 1
 
-        def testchange():
+        def cooldown():
             cd.cdgarbo = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_tag():
-    if cd.cdtagface == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'HungryTag')
-        cd.cdtagface = 1
+    else:
+        if cd.cdtagface == 0:
+            send_message(cfg.CHAN, 'HungryTag')
+            cd.cdtagface = 1
 
-        def testchange():
+
+        def cooldown():
             cd.cdtagface = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_faq():
-    if cd.cdfaq == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'Kappa')
-        cd.cdfaq = 1
+    else:
+        if cd.cdfaq == 0:
+            send_message(cfg.CHAN, 'Kappa')
+            cd.cdfaq = 1
 
-        def testchange():
+        def cooldown():
             cd.cdfaq = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_memes():
-    if cd.cdmemes == 0:
+    if sender in mods:
         send_message(cfg.CHAN, ' ˙͜ >˙ ‿☞')
-        cd.cdmemes = 1
+    else:
+        if cd.cdmemes == 0:
+            send_message(cfg.CHAN, ' ˙͜ >˙ ‿☞')
+            cd.cdmemes = 1
 
-        def testchange():
+        def cooldown():
             cd.cdmemes = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_kirbyskip():
-    if cd.cdkirby == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'Go fuck yourself!!! 4Head')
-        cd.cdkirby = 1
+    else:
+        if cd.cdkirby == 0:
+            send_message(cfg.CHAN, 'Go fuck yourself!!! 4Head')
+            cd.cdkirby = 1
 
-        def testchange():
+        def cooldown():
             cd.cdkirby = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_uuptime():
-    if cd.cduuptime == 0:
+    if sender in mods:
         r = requests.get('https://decapi.me/twitch/uptime.php?channel=stinkycheeseone890')
         send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
-        cd.cduuptime = 1
+    else:
+        if cd.cduuptime == 0:
+            r = requests.get('https://decapi.me/twitch/uptime.php?channel=stinkycheeseone890')
+            send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
+            cd.cduuptime = 1
 
-        def testchange():
+        def cooldown():
             cd.cduuptime = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_important():
-    if cd.cdimportant == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'b r e a k f a s t https://i.imgur.com/IjnhSOH.png')
-        cd.cdimportant = 1
+    else:
+        if cd.cdimportant == 0:
+            send_message(cfg.CHAN, 'b r e a k f a s t https://i.imgur.com/IjnhSOH.png')
+            cd.cdimportant = 1
 
-        def testchange():
+        def cooldown():
             cd.cdimportant = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_candy():
-    if cd.cdcandy == 0:
+    if sender in mods:
         send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' % chr(127852))
-        cd.cdcandy = 1
+    else:
+        if cd.cdcandy == 0:
+            send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' % chr(127852))
+            cd.cdcandy = 1
 
-        def testchange():
+        def cooldown():
             cd.cdcandy = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
-def command_sellout():
-    if cd.cdsellout == 0:
-        send_message(cfg.CHAN, '[̲̅$̲̅(̲̅•ᴗ•̲̅)̲̅$̲̅]')
-        cd.cdsellout = 1
-
-        def testchange():
-            cd.cdsellout = 0
-
-        t = Timer(30.0, testchange)
-        t.start()
-
-
-# --------------------------------------------- End Command Functions ----------------------------------------------
 def command_pb():
-            if sender in mods:
-                send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
-            else:
-                if cd.cdpb == 0:
-                    send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
-                    cd.cdpb = 1
+    if sender in mods:
+        send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
+    else:
+        if cd.cdpb == 0:
+            send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
+            cd.cdpb = 1
 
-            def cooldown():
-                cd.cdpb = 0
-            t = Timer(30.0, cooldown)
-            t.start()
+        def cooldown():
+            cd.cdpb = 0
+
+        t = Timer(30.0, cooldown)
+        t.start()
 
 
 con = socket.socket()
@@ -359,8 +371,9 @@ if not os.path.isfile(logpath + "log.txt"):
 
 
 def formatdate():
-    now = datetime.date.today()
-    return "[" + " ".join([now.strftime("%A")[0:3], now.strftime("%B")[0:3], now.strftime("%d"),
+    while(True):
+        now = datetime.date.today()
+        return "[" + " ".join([now.strftime("%A")[0:3], now.strftime("%B")[0:3], now.strftime("%d"),
                            datetime.datetime.now().strftime("%H:%M:%S"), time.tzname[0], now.strftime("%Y")]) + "]"
 
 
