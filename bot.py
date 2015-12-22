@@ -97,12 +97,25 @@ def parse_message(msg):
 
 # --------------------------------------------- Start Twitch API -----------------------------------------------
 
-response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
-readable = response.text
-chatlist = simplejson.loads(readable)
-chatters = chatlist['chatters']
-mods = chatters['moderators']
-plebs = chatters['viewers']
+
+def get_chatters():
+
+    try:
+        global chatters
+        global mods
+        global plebs
+        response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
+        readable = response.text
+        chatlist = simplejson.loads(readable)
+        chatters = chatlist['chatters']
+        mods = chatters['moderators']
+        plebs = chatters['viewers']
+    except:
+        print('twitch shat itself or json fucked up DansGame')
+    t = Timer(120.0, get_chatters)
+    t.start()
+
+get_chatters()
 
 # --------------------------------------------- End Twitch API -----------------------------------------------
 
