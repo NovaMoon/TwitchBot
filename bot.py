@@ -84,7 +84,8 @@ def parse_message(msg):
                    '!important': command_important,
                    '!wr': command_wr,
                    '!candy': command_candy,
-                   '!pb': command_pb}
+                   '!pb': command_pb,
+                   '!sellout': command_sellout}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg)
@@ -353,6 +354,23 @@ def command_pb():
 
         t = Timer(30.0, cooldown)
         t.start()
+
+
+
+def command_sellout():
+    if sender in mods:
+        send_message(cfg.CHAN, '[̲̅$̲̅(̲̅•ᴗ•̲̅)̲̅$̲̅]')
+    else:
+        if cd.cdsellout == 0:
+            send_message(cfg.CHAN, '[̲̅$̲̅(̲̅•ᴗ•̲̅)̲̅$̲̅]')
+            cd.cdsellout = 1
+
+        def cooldown():
+            cd.cdsellout = 0
+
+        t = Timer(30.0, cooldown)
+        t.start()
+
 
 
 con = socket.socket()
