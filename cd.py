@@ -10,3 +10,4 @@ cduuptime = 0
 cdimportant = 0
 cdwr = 0
 cdcandy = 0
+cdsellout = 0
