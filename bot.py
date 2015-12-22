@@ -11,6 +11,8 @@ import os
 import time
 import datetime
 import json
+import simplejson
+from bs4 import UnicodeDammit
 
 sys.dont_write_bytecode = True
 
@@ -82,7 +84,8 @@ def parse_message(msg):
                    '!important': command_important,
                    '!wr': command_wr,
                    '!candy': command_candy,
-                   '!sellout': command_sellout}
+                   '!sellout': command_sellout,
+                   '!pb': command_pb}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg)
@@ -92,15 +95,27 @@ def parse_message(msg):
 
 # --------------------------------------------- End Helper Functions -----------------------------------------------
 
+# --------------------------------------------- Start Twitch API -----------------------------------------------
+
+response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
+readable = response.text
+chatlist = simplejson.loads(readable)
+chatters = chatlist['chatters']
+mods = chatters['moderators']
+plebs = chatters['viewers']
+
+# --------------------------------------------- End Twitch API -----------------------------------------------
+
 # --------------------------------------------- Start Command Functions --------------------------------------------
 
+
 def command_wr(msg):
-    if cd.cdwr==0:
-        if len(msg)>=3:
-            cats=[]
-            catreq=1
-            catpos=0
-            account=1
+    if cd.cdwr == 0:
+        if len(msg) >= 3:
+            cats = []
+            catreq = 1
+            catpos = 0
+            account = 1
             try:
                 msg[3]
             except:
@@ -154,7 +169,19 @@ def command_wr(msg):
             playerlink = wr['players'][0]['uri']
             player = requests.get(playerlink)
             pjs = json.loads(player.text)
-            playername = pjs['data']['names']['international']
+            try:
+                pjs['data']['names']['international']
+            except:
+                account = 0
+            if account == 1:
+                playername = pjs['data']['names']['international']
+            else:
+                try:
+                    pjs['data']['name']
+                except:
+                    print('Error: Player doesn\'t exist.')
+                    return None
+                playername = pjs['data']['name']
             send_message(cfg.CHAN,
                          'The record in %s, %s is held by %s with %s' % (gamename, catname, playername, timename))
         else:
@@ -164,7 +191,7 @@ def command_wr(msg):
         def testchange():
             cd.cdwr = 0
 
-        t = Timer(10.0, testchange)
+        t = Timer(30.0, testchange)
         t.start()
 
 
@@ -279,11 +306,11 @@ def command_important():
 
 def command_candy():
     if cd.cdcandy == 0:
-        send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' %chr(127852))
+        send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' % chr(127852))
         cd.cdcandy = 1
 
         def testchange():
-            cd.cdimportant = 0
+            cd.cdcandy = 0
 
         t = Timer(30.0, testchange)
         t.start()
@@ -302,6 +329,18 @@ def command_sellout():
 
 
 # --------------------------------------------- End Command Functions ----------------------------------------------
+def command_pb():
+            if sender in mods:
+                send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
+            else:
+                if cd.cdpb == 0:
+                    send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
+                    cd.cdpb = 1
+
+            def cooldown():
+                cd.cdpb = 0
+            t = Timer(30.0, cooldown)
+            t.start()
 
 
 con = socket.socket()
@@ -355,7 +394,8 @@ while True:
                     print(sender + ": " + message)
 
                     with open(logpath + 'log.txt', 'a+') as f:
-                        f.write('%s %s: %s\n"' % (now, sender, message))
+                        f.write('%s %s: %s\n"' % (now, sender, UnicodeDammit(message).unicode_markup.encode(
+                            'utf8')))  # encode characters like ( •ᴗ•) and wont crash the bot
 
 
 
