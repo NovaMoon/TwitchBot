@@ -123,19 +123,20 @@ get_chatters()
 
 
 def command_wr(msg):
+    """queries speedrun.com api for game and category in game if specified, and returns data about world record run"""
         if len(msg) >= 3:
             cats = []
             catreq = 1
             catpos = 0
             account = 1
-            try:
+            try:                   # checks if message has a category specified
                 msg[3]
             except:
                 catreq = 0
             game = msg[1]
             r = requests.get('http://www.speedrun.com/api/v1/games?name=%s' % game)
             rjs = json.loads(r.text)
-            try:
+            try:                        # makes sure game exists
                 rjs['data'][0]['names']['international']
             except:
                 send_message(cfg.CHAN, 'No game found.')
@@ -144,10 +145,10 @@ def command_wr(msg):
             category = rjs['data'][0]['links'][4]['uri']
             catlink = requests.get(category)
             cjs = json.loads(catlink.text)
-            try:
+            try:                           # makes sure there are categories of the game
                 cjs['data'][0]['name']
             except:
-                send_message(cfg.CHAN, 'No game found.')
+                send_message(cfg.CHAN, 'No categories found.')
                 return None
             if catreq == 1:
                 for cat in cjs['data']:
@@ -170,9 +171,9 @@ def command_wr(msg):
             records = cjs['data'][catpos]['links'][3]['uri']
             reclink = requests.get(records)
             recjs = json.loads(reclink.text)
-            try:
+            try:                           # makes sure there are runs for the category
                 recjs['data'][0]['runs'][0]['run']
-            except:
+            except: 
                 send_message(cfg.CHAN, 'No runs found for %s, %s.' % (gamename, catname))
                 return None
             wr = recjs['data'][0]['runs'][0]['run']
@@ -181,17 +182,17 @@ def command_wr(msg):
             playerlink = wr['players'][0]['uri']
             player = requests.get(playerlink)
             pjs = json.loads(player.text)
-            try:
+            try:                      # checks if player has an account
                 pjs['data']['names']['international']
             except:
                 account = 0
             if account == 1:
                 playername = pjs['data']['names']['international']
             else:
-                try:
+                try:                                     # if player doesn't have a name errors out
                     pjs['data']['name']
                 except:
-                    print('Error: Player doesn\'t exist.')
+                    send_message(cfg.CHAN, 'Error: Player doesn\'t exist.')
                     return None
                 playername = pjs['data']['name']
             send_message(cfg.CHAN,
@@ -384,7 +385,9 @@ def command_sellout():
         t = Timer(30.0, cooldown)
         t.start()
 
+#--------------------------------------------End Command Functions--------------------------------------------
 
+#---------------------------------------Start Running Code----------------------------------------------------
 
 con = socket.socket()
 con.connect((cfg.HOST, cfg.PORT))

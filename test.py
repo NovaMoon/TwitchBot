@@ -2,9 +2,13 @@ import json
 import requests
 import datetime
 import pprint
+from Pastebin import PastebinAPI
+
+PASTEKEY = '4d150744923e05e1eb047ec0f613fe28'
 
 
-def command_runner(msg, sender):
+def command_runner(msg, PASTEKEY):
+    x = PastebinAPI()
     data = 'data'
     user = msg[1]
     games = []
@@ -12,7 +16,8 @@ def command_runner(msg, sender):
     runplaces = []
     runcats = []
     rungames = []
-    i = 0
+    runstrlist = [['Game', 'Category', 'Place', 'Time']]
+    i = 1
     runner = requests.get('http://www.speedrun.com/api/v1/users?name=%s' % user)
     rjs = json.loads(runner.text)
     try:
@@ -31,25 +36,15 @@ def command_runner(msg, sender):
             games.append(gamename)
     gamestr = ', '.join(games[:5])
     fullgamestr = ', '.join(games)
-    if len(msg)<=3:
-        if len(games) == 1:
-            print('%s has run the following games: %s.' % (name, gamestr))
-        else:
-            print("%s has run the following games and %i others: %s."% (name, (len(games)-5), gamestr))
-            print("/w %s The full list of games %s has run is: %s." %(sender, name, fullgamestr))
-    else:
-        for run in runs:
-            run['game']['data']['names']['international'] = run['game']['data']['names']['international'].lower()
-            if msg[2] in run['game']['data']['names']['international'].replace(" ", ""):
-                time = run['run']['times']['primary_t']
-                runtime = str(datetime.timedelta(seconds=time))
-                runtimes.append(runtime)
-                runplaces.append(run['place'])
-                runcats.append(run['category']['data']['name'])
-                rungames.append(run['game']['data']['names']['international'])
-        if len(rungames)>1:
-            print('%s has a run in %i categories of %s.' % (name, len(runcats), rungames[0]))
-    pprint.pprint(rungames)
-msg =  ['!runner', 'jumpyluff', '']
-sender = 'litewarior'
-command_runner(msg, sender)
+    for run in runs:
+        run['game']['data']['names']['international'] = run['game']['data']['names']['international'].lower()
+        time = run['run']['times']['primary_t']
+        runtime = str(datetime.timedelta(seconds=time))
+        runtimes.append(runtime)
+        runplaces.append(str(run['place']))
+        runcats.append(run['category']['data']['name'])
+        rungames.append(run['game']['data']['names']['international'])
+        i = i+1
+    print(runstr)
+msg =  ['!runner', 'stinkycheeseone890', '']
+command_runner(msg, PASTEKEY)
