@@ -15,7 +15,7 @@ import simplejson
 from bs4 import UnicodeDammit
 
 sys.dont_write_bytecode = True
-
+wrsenders = []
 
 # ---------------------------------- Start Functions ----------------------------------------------------
 
@@ -89,7 +89,7 @@ def parse_message(msg):
                    '!3212': command_tjfreak}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
-                options[msg[0]](msg)
+                options[msg[0]](msg, sender)
             else:
                 options[msg[0]]()
 
@@ -123,90 +123,106 @@ get_chatters()
 # --------------------------------------------- Start Command Functions --------------------------------------------
 
 
-def command_wr(msg):
+def command_wr(msg, sender):
     """queries speedrun.com api for game and category in game if specified, and returns data about world record run"""
-    if len(msg) >= 3:
-        datename = 'unknown'
-        cats = []
-        catreq = 1
-        catpos = 0
-        account = 1
-        try:                   # checks if message has a category specified
-            msg[3]
-        except:
-            catreq = 0
-        game = msg[1]
-        r = requests.get('http://www.speedrun.com/api/v1/games?name=%s' % game)
-        rjs = json.loads(r.text)
-        try:                        # makes sure game exists
-            rjs['data'][0]['names']['international']
-        except:
-            send_message(cfg.CHAN, 'No game found.')
-            return None
-        gamename = rjs['data'][0]['names']['international']
-        category = rjs['data'][0]['links'][4]['uri']
-        catlink = requests.get(category)
-        cjs = json.loads(catlink.text)
-        try:                           # makes sure there are categories of the game
-            cjs['data'][0]['name']
-        except:
-            send_message(cfg.CHAN, 'No categories found.')
-            return None
-        if catreq == 1:
-            for cat in cjs['data']:
-                cats.append(cat['name'])
-                cats[-1] = str.lower(cats[-1])
-            catname = ''
-            if msg[2] in cats:
-                catname = msg[2]
-                catpos = cats.index(msg[2])
-            else:
-                for cat in cats:
-                    if msg[2] in cat:
-                        while not catname:
-                            catname = cat
-                            catpos = cats.index(cat)
-                if not catname:
-                    catname = cjs['data'][catpos]['name']
-        else:
-            catname = cjs['data'][catpos]['name']
-        records = cjs['data'][catpos]['links'][3]['uri']
-        reclink = requests.get(records)
-        recjs = json.loads(reclink.text)
-        try:                           # makes sure there are runs for the category
-            recjs['data'][0]['runs'][0]['run']
-        except:
-            send_message(cfg.CHAN, 'No runs found for %s, %s.' % (gamename, catname))
-            return None
-        wr = recjs['data'][0]['runs'][0]['run']
-        try:
-            datename = wr['date']
-        except:
-            print('No date found')
-        time = wr['times']['primary_t']
-        timename = str(datetime.timedelta(seconds=time))
-        playerlink = wr['players'][0]['uri']
-        player = requests.get(playerlink)
-        pjs = json.loads(player.text)
-        try:                      # checks if player has an account
-            pjs['data']['names']['international']
-        except:
-            account = 0
-        if account == 1:
-            playername = pjs['data']['names']['international']
-        else:
-            try:                                     # if player doesn't have a name errors out
-                pjs['data']['name']
+    if sender in mods or (sender not in wrsenders and cd.cdwr == 0):
+        if len(msg) >= 3:
+            global wrsenders
+            datename = 'unknown'
+            cats = []
+            catreq = 1
+            catpos = 0
+            account = 1
+            try:                   # checks if message has a category specified
+                msg[3]
             except:
-                send_message(cfg.CHAN, 'Error: Player doesn\'t exist.')
+                catreq = 0
+            game = msg[1]
+            r = requests.get('http://www.speedrun.com/api/v1/games?name=%s' % game)
+            rjs = json.loads(r.text)
+            try:                        # makes sure game exists
+                rjs['data'][0]['names']['international']
+            except:
+                send_message(cfg.CHAN, 'No game found.')
                 return None
-            playername = pjs['data']['name']
-        send_message(cfg.CHAN,
-                     'The record in %s, %s was achieved by %s, on %s with %s'
-                     % (gamename, catname, playername, datename, timename))
-    else:
-        send_message(cfg.CHAN, 'Specify a game.')
+            gamename = rjs['data'][0]['names']['international']
+            category = rjs['data'][0]['links'][4]['uri']
+            catlink = requests.get(category)
+            cjs = json.loads(catlink.text)
+            try:                           # makes sure there are categories of the game
+                cjs['data'][0]['name']
+            except:
+                send_message(cfg.CHAN, 'No categories found.')
+                return None
+            if catreq == 1:
+                for cat in cjs['data']:
+                    cats.append(cat['name'])
+                    cats[-1] = str.lower(cats[-1])
+                catname = ''
+                if msg[2] in cats:
+                    catname = msg[2]
+                    catpos = cats.index(msg[2])
+                else:
+                    for cat in cats:
+                        if msg[2] in cat:
+                            while not catname:
+                                catname = cat
+                                catpos = cats.index(cat)
+                    if not catname:
+                        catname = cjs['data'][catpos]['name']
+            else:
+                catname = cjs['data'][catpos]['name']
+            records = cjs['data'][catpos]['links'][3]['uri']
+            reclink = requests.get(records)
+            recjs = json.loads(reclink.text)
+            try:                           # makes sure there are runs for the category
+                recjs['data'][0]['runs'][0]['run']
+            except:
+                send_message(cfg.CHAN, 'No runs found for %s, %s.' % (gamename, catname))
+                return None
+            wr = recjs['data'][0]['runs'][0]['run']
+            try:
+                datename = wr['date']
+            except:
+                print('No date found')
+            time = wr['times']['primary_t']
+            timename = str(datetime.timedelta(seconds=time))
+            playerlink = wr['players'][0]['uri']
+            player = requests.get(playerlink)
+            pjs = json.loads(player.text)
+            try:                      # checks if player has an account
+                pjs['data']['names']['international']
+            except:
+                account = 0
+            if account == 1:
+                playername = pjs['data']['names']['international']
+            else:
+                try:                                     # if player doesn't have a name errors out
+                    pjs['data']['name']
+                except:
+                    send_message(cfg.CHAN, 'Error: Player doesn\'t exist.')
+                    return None
+                playername = pjs['data']['name']
+            send_message(cfg.CHAN,
+                         'The record in %s, %s was achieved by %s, on %s with %s'
+                         % (gamename, catname, playername, datename, timename))
+            wrsenders.append(sender)
+            twr = Timer(180.0, wr_remove)
+            twr.start()
+            cd.cdwr = 1
 
+            def testchange():
+                cd.cdwr = 0
+
+            t = Timer(30.0, testchange)
+            t.start()
+        else:
+            send_message(cfg.CHAN, 'Specify a game.')
+
+
+def wr_remove(sender):
+    global wrsenders
+    wrsenders.remove(sender)
 
 def command_uptime():
     if sender in mods:
