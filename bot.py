@@ -207,7 +207,7 @@ def command_wr(msg, sender):
                          'The record in %s, %s was achieved by %s, on %s with %s'
                          % (gamename, catname, playername, datename, timename))
             wrsenders.append(sender)
-            twr = Timer(180.0, wr_remove(sender))
+            twr = Timer(180.0, wr_remove, [sender])
             twr.start()
             cd.cdwr = 1
 
