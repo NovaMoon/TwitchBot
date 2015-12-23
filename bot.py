@@ -128,7 +128,6 @@ def command_wr(msg, sender):
     """queries speedrun.com api for game and category in game if specified, and returns data about world record run"""
     if sender in mods or (sender not in wrsenders and cd.cdwr == 0):
         if len(msg) >= 3:
-            global wrsenders
             datename = 'unknown'
             cats = []
             catreq = 1
@@ -222,7 +221,6 @@ def command_wr(msg, sender):
 
 
 def wr_remove(sender):
-    global wrsenders
     wrsenders.remove(sender)
 
 def command_uptime():
