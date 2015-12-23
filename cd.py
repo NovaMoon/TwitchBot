@@ -11,3 +11,4 @@ cdimportant = 0
 cdwr = 0
 cdcandy = 0
 cdsellout = 0
+cdtjfreak = 0

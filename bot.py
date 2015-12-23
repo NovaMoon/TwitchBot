@@ -85,7 +85,8 @@ def parse_message(msg):
                    '!wr': command_wr,
                    '!candy': command_candy,
                    '!pb': command_pb,
-                   '!sellout': command_sellout}
+                   '!sellout': command_sellout,
+                   '!3212': command_tjfreak}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg)
@@ -390,7 +391,22 @@ def command_sellout():
         t = Timer(30.0, cooldown)
         t.start()
 
-#--------------------------------------------End Command Functions--------------------------------------------
+
+def command_tjfreak():
+    if sender in mods:
+        send_message(cfg.CHAN, 'PogChamp http://www.twitch.tv/tehjman1993/v/8786489 PogChamp')
+    else:
+        if cd.cdtjfreak == 0:
+            send_message(cfg.CHAN, 'PogChamp http://www.twitch.tv/tehjman1993/v/8786489 PogChamp')
+            cd.cdtjfreak = 1
+
+        def cooldown():
+            cd.cdtjfreak = 0
+
+        t = Timer(30.0, cooldown)
+        t.start()
+
+--------------------------------------------End Command Functions--------------------------------------------
 
 #---------------------------------------Start Running Code----------------------------------------------------
 
