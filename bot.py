@@ -15,7 +15,6 @@ import simplejson
 from bs4 import UnicodeDammit
 
 sys.dont_write_bytecode = True
-wrsenders = []
 
 # ---------------------------------- Start Functions ----------------------------------------------------
 
@@ -209,7 +208,7 @@ def command_wr(msg, sender):
                          'The record in %s, %s was achieved by %s, on %s with %s'
                          % (gamename, catname, playername, datename, timename))
             wrsenders.append(sender)
-            twr = Timer(180.0, wr_remove)
+            twr = Timer(180.0, wr_remove(sender))
             twr.start()
             cd.cdwr = 1
 
@@ -464,6 +463,7 @@ join_channel(cfg.CHAN)
 
 data = ""
 
+wrsenders = ['']
 logpath = '/home/novamoon/twitch/chat/stinkycheeseone890/'
 if not os.path.isfile(logpath + "log.txt"):
     print("Creating log file for" + cfg.CHAN)
