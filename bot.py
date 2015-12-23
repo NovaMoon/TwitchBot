@@ -84,8 +84,8 @@ def parse_message(msg):
                    '!important': command_important,
                    '!wr': command_wr,
                    '!candy': command_candy,
-                   '!sellout': command_sellout,
-                   '!pb': command_pb}
+                   '!pb': command_pb,
+                   '!sellout': command_sellout}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg)
@@ -97,12 +97,25 @@ def parse_message(msg):
 
 # --------------------------------------------- Start Twitch API -----------------------------------------------
 
-response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
-readable = response.text
-chatlist = simplejson.loads(readable)
-chatters = chatlist['chatters']
-mods = chatters['moderators']
-plebs = chatters['viewers']
+
+def get_chatters():
+
+    try:
+        global chatters
+        global mods
+        global plebs
+        response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
+        readable = response.text
+        chatlist = simplejson.loads(readable)
+        chatters = chatlist['chatters']
+        mods = chatters['moderators']
+        plebs = chatters['viewers']
+    except:
+        print('twitch shat itself or json fucked up DansGame')
+    t = Timer(120.0, get_chatters)
+    t.start()
+
+get_chatters()
 
 # --------------------------------------------- End Twitch API -----------------------------------------------
 
@@ -110,21 +123,21 @@ plebs = chatters['viewers']
 
 
 def command_wr(msg):
-    if cd.cdwr == 0:
+    """queries speedrun.com api for game and category in game if specified, and returns data about world record run"""
         if len(msg) >= 3:
             datename = 'unknown'
             cats = []
             catreq = 1
             catpos = 0
             account = 1
-            try:
+            try:                   # checks if message has a category specified
                 msg[3]
             except:
                 catreq = 0
             game = msg[1]
             r = requests.get('http://www.speedrun.com/api/v1/games?name=%s' % game)
             rjs = json.loads(r.text)
-            try:
+            try:                        # makes sure game exists
                 rjs['data'][0]['names']['international']
             except:
                 send_message(cfg.CHAN, 'No game found.')
@@ -133,10 +146,10 @@ def command_wr(msg):
             category = rjs['data'][0]['links'][4]['uri']
             catlink = requests.get(category)
             cjs = json.loads(catlink.text)
-            try:
+            try:                           # makes sure there are categories of the game
                 cjs['data'][0]['name']
             except:
-                send_message(cfg.CHAN, 'No game found.')
+                send_message(cfg.CHAN, 'No categories found.')
                 return None
             if catreq == 1:
                 for cat in cjs['data']:
@@ -159,9 +172,9 @@ def command_wr(msg):
             records = cjs['data'][catpos]['links'][3]['uri']
             reclink = requests.get(records)
             recjs = json.loads(reclink.text)
-            try:
+            try:                           # makes sure there are runs for the category
                 recjs['data'][0]['runs'][0]['run']
-            except:
+            except: 
                 send_message(cfg.CHAN, 'No runs found for %s, %s.' % (gamename, catname))
                 return None
             wr = recjs['data'][0]['runs'][0]['run']
@@ -174,17 +187,17 @@ def command_wr(msg):
             playerlink = wr['players'][0]['uri']
             player = requests.get(playerlink)
             pjs = json.loads(player.text)
-            try:
+            try:                      # checks if player has an account
                 pjs['data']['names']['international']
             except:
                 account = 0
             if account == 1:
                 playername = pjs['data']['names']['international']
             else:
-                try:
+                try:                                     # if player doesn't have a name errors out
                     pjs['data']['name']
                 except:
-                    print('Error: Player doesn\'t exist.')
+                    send_message(cfg.CHAN, 'Error: Player doesn\'t exist.')
                     return None
                 playername = pjs['data']['name']
             send_message(cfg.CHAN,
@@ -192,19 +205,16 @@ def command_wr(msg):
                          % (gamename, catname, playername, datename, timename))
         else:
             send_message(cfg.CHAN, 'Specify a game.')
-        cd.cdwr = 1
 
-        def testchange():
-            cd.cdwr = 0
-
-        t = Timer(30.0, testchange)
-        t.start()
 
 
 def command_uptime():
-    if cd.cduptime == 0:
+    if sender in mods:
         send_message(cfg.CHAN, '420am69pm')
-        cd.cduptime = 1
+    else:
+        if cd.cduptime == 0:
+            send_message(cfg.CHAN, '420am69pm')
+            cd.cduptime = 1
 
         def testchange():
             cd.cduptime = 0
@@ -214,140 +224,176 @@ def command_uptime():
 
 
 def command_commands():
-    if cd.cdcommands == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
-        cd.cdcommands = 1
+    else:
+        if cd.cdcommands == 0:
+            send_message(cfg.CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
+            cd.cdcommands = 1
 
-        def testchange():
+        def cooldown():
             cd.cdcommands = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_garbo():
-    if cd.cdgarbo == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
-        cd.cdgarbo = 1
+    else:
+        if cd.cdgarbo == 0:
+            send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
+            cd.cdgarbo = 1
 
-        def testchange():
+        def cooldown():
             cd.cdgarbo = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_tag():
-    if cd.cdtagface == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'HungryTag')
-        cd.cdtagface = 1
+    else:
+        if cd.cdtagface == 0:
+            send_message(cfg.CHAN, 'HungryTag')
+            cd.cdtagface = 1
 
-        def testchange():
+
+        def cooldown():
             cd.cdtagface = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_faq():
-    if cd.cdfaq == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'Kappa')
-        cd.cdfaq = 1
+    else:
+        if cd.cdfaq == 0:
+            send_message(cfg.CHAN, 'Kappa')
+            cd.cdfaq = 1
 
-        def testchange():
+        def cooldown():
             cd.cdfaq = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_memes():
-    if cd.cdmemes == 0:
+    if sender in mods:
         send_message(cfg.CHAN, ' ˙͜ >˙ ‿☞')
-        cd.cdmemes = 1
+    else:
+        if cd.cdmemes == 0:
+            send_message(cfg.CHAN, ' ˙͜ >˙ ‿☞')
+            cd.cdmemes = 1
 
-        def testchange():
+        def cooldown():
             cd.cdmemes = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_kirbyskip():
-    if cd.cdkirby == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'Go fuck yourself!!! 4Head')
-        cd.cdkirby = 1
+    else:
+        if cd.cdkirby == 0:
+            send_message(cfg.CHAN, 'Go fuck yourself!!! 4Head')
+            cd.cdkirby = 1
 
-        def testchange():
+        def cooldown():
             cd.cdkirby = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_uuptime():
-    if cd.cduuptime == 0:
+    if sender in mods:
         r = requests.get('https://decapi.me/twitch/uptime.php?channel=stinkycheeseone890')
         send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
-        cd.cduuptime = 1
+    else:
+        if cd.cduuptime == 0:
+            r = requests.get('https://decapi.me/twitch/uptime.php?channel=stinkycheeseone890')
+            send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
+            cd.cduuptime = 1
 
-        def testchange():
+        def cooldown():
             cd.cduuptime = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_important():
-    if cd.cdimportant == 0:
+    if sender in mods:
         send_message(cfg.CHAN, 'b r e a k f a s t https://i.imgur.com/IjnhSOH.png')
-        cd.cdimportant = 1
+    else:
+        if cd.cdimportant == 0:
+            send_message(cfg.CHAN, 'b r e a k f a s t https://i.imgur.com/IjnhSOH.png')
+            cd.cdimportant = 1
 
-        def testchange():
+        def cooldown():
             cd.cdimportant = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_candy():
-    if cd.cdcandy == 0:
+    if sender in mods:
         send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' % chr(127852))
-        cd.cdcandy = 1
+    else:
+        if cd.cdcandy == 0:
+            send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' % chr(127852))
+            cd.cdcandy = 1
 
-        def testchange():
+        def cooldown():
             cd.cdcandy = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
+
+
+def command_pb():
+    if sender in mods:
+        send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
+    else:
+        if cd.cdpb == 0:
+            send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
+            cd.cdpb = 1
+
+        def cooldown():
+            cd.cdpb = 0
+
+        t = Timer(30.0, cooldown)
+        t.start()
+
 
 
 def command_sellout():
-    if cd.cdsellout == 0:
+    if sender in mods:
         send_message(cfg.CHAN, '[̲̅$̲̅(̲̅•ᴗ•̲̅)̲̅$̲̅]')
-        cd.cdsellout = 1
+    else:
+        if cd.cdsellout == 0:
+            send_message(cfg.CHAN, '[̲̅$̲̅(̲̅•ᴗ•̲̅)̲̅$̲̅]')
+            cd.cdsellout = 1
 
-        def testchange():
+        def cooldown():
             cd.cdsellout = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
+#--------------------------------------------End Command Functions--------------------------------------------
 
-# --------------------------------------------- End Command Functions ----------------------------------------------
-def command_pb():
-            if sender in mods:
-                send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
-            else:
-                if cd.cdpb == 0:
-                    send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
-                    cd.cdpb = 1
-
-            def cooldown():
-                cd.cdpb = 0
-            t = Timer(30.0, cooldown)
-            t.start()
-
+#---------------------------------------Start Running Code----------------------------------------------------
 
 con = socket.socket()
 con.connect((cfg.HOST, cfg.PORT))
@@ -365,8 +411,9 @@ if not os.path.isfile(logpath + "log.txt"):
 
 
 def formatdate():
-    now = datetime.date.today()
-    return "[" + " ".join([now.strftime("%A")[0:3], now.strftime("%B")[0:3], now.strftime("%d"),
+    while(True):
+        now = datetime.date.today()
+        return "[" + " ".join([now.strftime("%A")[0:3], now.strftime("%B")[0:3], now.strftime("%d"),
                            datetime.datetime.now().strftime("%H:%M:%S"), time.tzname[0], now.strftime("%Y")]) + "]"
 
 
