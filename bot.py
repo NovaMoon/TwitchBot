@@ -397,10 +397,10 @@ def command_pb():
 
 def command_sellout():
     if sender in mods:
-        send_message(cfg.CHAN, '[̲̅$̲̅(̲̅•ᴗ•̲̅)̲̅$̲̅]')
+        send_message(cfg.CHAN, ' [̲̅$̲̅ ̲̅ ̲̅(̲̅ •ᴗ•̲̅)̲̅ψ̲̅$̲̅]')
     else:
         if cd.cdsellout == 0:
-            send_message(cfg.CHAN, '[̲̅$̲̅(̲̅•ᴗ•̲̅)̲̅$̲̅]')
+            send_message(cfg.CHAN, ' [̲̅$̲̅ ̲̅ ̲̅(̲̅ •ᴗ•̲̅)̲̅ψ̲̅$̲̅]')
             cd.cdsellout = 1
 
         def cooldown():
