@@ -12,3 +12,5 @@ cdwr = 0
 cdcandy = 0
 cdsellout = 0
 cdtjfreak = 0
+cdkeyboard = 0
+cdwannabes = 0

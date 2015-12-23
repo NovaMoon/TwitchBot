@@ -86,7 +86,9 @@ def parse_message(msg):
                    '!candy': command_candy,
                    '!pb': command_pb,
                    '!sellout': command_sellout,
-                   '!3212': command_tjfreak}
+                   '!3212': command_tjfreak,
+                   '!keyboard': command_keyboard,
+                   '!wannabes': command_wannabes}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg, sender)
@@ -422,7 +424,34 @@ def command_tjfreak():
         t = Timer(30.0, cooldown)
         t.start()
 
---------------------------------------------End Command Functions--------------------------------------------
+def command_keyboard():
+    if sender in mods:
+        send_message(cfg.CHAN, 'Ducky Shine 4 w/ Cherry MX Reds')
+    else:
+        if cd.cdkeyboard == 0:
+            send_message(cfg.CHAN, 'Ducky Shine 4 w/ Cherry MX Reds')
+            cd.cdkeyboard = 1
+
+    def cooldown():
+        cd.cdkeyboard = 0
+
+        t = Timer(30.0, cooldown)
+        t.start()
+
+def command_wannabes():
+    if sender in mods:
+        send_message(cfg.CHAN, 'A group of memers.')
+    else:
+        if cd.cdwannabes == 0:
+            send_message(cfg.CHAN, 'A group of memers.')
+            cd.cdwannabes = 1
+
+    def cooldown():
+        cd.cdwannabes = 0
+
+        t = Timer(30.0, cooldown)
+        t.start()
+#--------------------------------------------End Command Functions--------------------------------------------
 
 #---------------------------------------Start Running Code----------------------------------------------------
 
