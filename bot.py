@@ -112,6 +112,7 @@ plebs = chatters['viewers']
 def command_wr(msg):
     if cd.cdwr == 0:
         if len(msg) >= 3:
+            datename = 'unknown'
             cats = []
             catreq = 1
             catpos = 0
@@ -164,6 +165,10 @@ def command_wr(msg):
                 send_message(cfg.CHAN, 'No runs found for %s, %s.' % (gamename, catname))
                 return None
             wr = recjs['data'][0]['runs'][0]['run']
+            try:
+                datename = wr['date']
+            except:
+                print('No date found')
             time = wr['times']['primary_t']
             timename = str(datetime.timedelta(seconds=time))
             playerlink = wr['players'][0]['uri']
@@ -183,7 +188,8 @@ def command_wr(msg):
                     return None
                 playername = pjs['data']['name']
             send_message(cfg.CHAN,
-                         'The record in %s, %s is held by %s with %s' % (gamename, catname, playername, timename))
+                         'The record in %s, %s was achieved by %s, on %s with %s'
+                         % (gamename, catname, playername, datename, timename))
         else:
             send_message(cfg.CHAN, 'Specify a game.')
         cd.cdwr = 1
