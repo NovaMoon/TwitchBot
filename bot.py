@@ -15,6 +15,7 @@ from bs4 import UnicodeDammit
 
 sys.dont_write_bytecode = True
 
+
 # ---------------------------------- Start Functions ----------------------------------------------------
 
 
@@ -99,24 +100,24 @@ def parse_message(msg):
 
 
 def get_chatters():
-
     try:
         global chatters
         global mods
         global plebs
         response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
-        response.encoding = 'utf-8'
         readable = response.text
         chatlist = json.loads(readable)
         chatters = chatlist['chatters']
         mods = chatters['moderators']
         plebs = chatters['viewers']
     except:
-        print('twitch shat itself or json fucked up DansGame')
-    t = Timer(120.0, get_chatters)
+        print('twitch shat itself DansGame')
+    t = Timer(90.0, get_chatters)
     t.start()
 
+
 get_chatters()
+
 
 # --------------------------------------------- End Twitch API -----------------------------------------------
 
@@ -132,14 +133,14 @@ def command_wr(msg, sender):
             catreq = 1
             catpos = 0
             account = 1
-            try:                   # checks if message has a category specified
+            try:  # checks if message has a category specified
                 msg[3]
             except:
                 catreq = 0
             game = msg[1]
             r = requests.get('http://www.speedrun.com/api/v1/games?name=%s' % game)
             rjs = json.loads(r.text)
-            try:                        # makes sure game exists
+            try:  # makes sure game exists
                 rjs['data'][0]['names']['international']
             except:
                 send_message(cfg.CHAN, 'No game found.')
@@ -148,7 +149,7 @@ def command_wr(msg, sender):
             category = rjs['data'][0]['links'][4]['uri']
             catlink = requests.get(category)
             cjs = json.loads(catlink.text)
-            try:                           # makes sure there are categories of the game
+            try:  # makes sure there are categories of the game
                 cjs['data'][0]['name']
             except:
                 send_message(cfg.CHAN, 'No categories found.')
@@ -174,7 +175,7 @@ def command_wr(msg, sender):
             records = cjs['data'][catpos]['links'][3]['uri']
             reclink = requests.get(records)
             recjs = json.loads(reclink.text)
-            try:                           # makes sure there are runs for the category
+            try:  # makes sure there are runs for the category
                 recjs['data'][0]['runs'][0]['run']
             except:
                 send_message(cfg.CHAN, 'No runs found for %s, %s.' % (gamename, catname))
@@ -189,14 +190,14 @@ def command_wr(msg, sender):
             playerlink = wr['players'][0]['uri']
             player = requests.get(playerlink)
             pjs = json.loads(player.text)
-            try:                      # checks if player has an account
+            try:  # checks if player has an account
                 pjs['data']['names']['international']
             except:
                 account = 0
             if account == 1:
                 playername = pjs['data']['names']['international']
             else:
-                try:                                     # if player doesn't have a name errors out
+                try:  # if player doesn't have a name errors out
                     pjs['data']['name']
                 except:
                     send_message(cfg.CHAN, 'Error: Player doesn\'t exist.')
@@ -221,6 +222,7 @@ def command_wr(msg, sender):
 
 def wr_remove(sender):
     wrsenders.remove(sender)
+
 
 def command_uptime():
     if sender in mods:
@@ -390,7 +392,6 @@ def command_pb():
         t.start()
 
 
-
 def command_sellout():
     if sender in mods:
         send_message(cfg.CHAN, ' [̲̅$̲̅ ̲̅ ̲̅(̲̅ •ᴗ•̲̅)̲̅ψ̲̅$̲̅]')
@@ -420,6 +421,7 @@ def command_keyboard():
         t = Timer(30.0, cooldown)
         t.start()
 
+
 def command_wannabes():
     if sender in mods:
         send_message(cfg.CHAN, 'A group of memers.')
@@ -433,9 +435,11 @@ def command_wannabes():
 
         t = Timer(30.0, cooldown)
         t.start()
-#--------------------------------------------End Command Functions--------------------------------------------
 
-#---------------------------------------Start Running Code----------------------------------------------------
+
+# --------------------------------------------End Command Functions--------------------------------------------
+
+# ---------------------------------------Start Running Code----------------------------------------------------
 
 con = socket.socket()
 con.connect((cfg.HOST, cfg.PORT))
@@ -454,10 +458,10 @@ if not os.path.isfile(logpath + "log.txt"):
 
 
 def formatdate():
-    while(True):
+    while True:
         now = datetime.date.today()
         return "[" + " ".join([now.strftime("%A")[0:3], now.strftime("%B")[0:3], now.strftime("%d"),
-                           datetime.datetime.now().strftime("%H:%M:%S"), time.tzname[0], now.strftime("%Y")]) + "]"
+                               datetime.datetime.now().strftime("%H:%M:%S"), time.tzname[0], now.strftime("%Y")]) + "]"
 
 
 now = formatdate()
@@ -491,7 +495,7 @@ while True:
 
                     with open(logpath + 'log.txt', 'a+') as f:
                         f.write('%s %s: %s\n"' % (now, sender, UnicodeDammit(message).unicode_markup.encode(
-                            'utf8')))  # encode characters like ( •ᴗ•) and wont crash the bot
+                                'utf8')))  # encode characters like ( •ᴗ•) and wont crash the bot
 
 
 
