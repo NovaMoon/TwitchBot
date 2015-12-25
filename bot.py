@@ -10,8 +10,7 @@ import spl
 import os
 import time
 import datetime
-import json
-import simplejson
+import simplejson as json
 from bs4 import UnicodeDammit
 
 sys.dont_write_bytecode = True
@@ -106,8 +105,9 @@ def get_chatters():
         global mods
         global plebs
         response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
+        response.encoding = 'utf-8'
         readable = response.text
-        chatlist = simplejson.loads(readable)
+        chatlist = json.loads(readable)
         chatters = chatlist['chatters']
         mods = chatters['moderators']
         plebs = chatters['viewers']
