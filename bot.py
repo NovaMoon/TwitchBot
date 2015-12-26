@@ -73,20 +73,9 @@ def parse_message(msg):
     if len(msg) >= 1:
         msg = msg.split(' ')
         options = {'!uptime': command_uptime,
-                   '!commands': command_commands,
-                   '!garbo': command_garbo,
-                   '!tag': command_tag,
-                   '!faq': command_faq,
-                   '!memes': command_memes,
-                   '!kirbyskip': command_kirbyskip,
-                   '!uuptime': command_uuptime,
-                   '!important': command_important,
-                   '!wr': command_wr,
-                   '!candy': command_candy,
-                   '!pb': command_pb,
-                   '!sellout': command_sellout,
-                   '!keyboard': command_keyboard,
-                   '!wannabes': command_wannabes}
+                   '!wr': command_wr
+                   }
+
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg, sender)
@@ -104,7 +93,7 @@ def get_chatters():
         global chatters
         global mods
         global plebs
-        response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
+        response = requests.get('https://tmi.twitch.tv/group/user/channel/chatters')
         readable = response.text
         chatlist = json.loads(readable)
         chatters = chatlist['chatters']
@@ -239,204 +228,6 @@ def command_uptime():
         t.start()
 
 
-def command_commands():
-    if sender in mods:
-        send_message(cfg.CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
-    else:
-        if cd.cdcommands == 0:
-            send_message(cfg.CHAN,
-                         'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
-            cd.cdcommands = 1
-
-        def cooldown():
-            cd.cdcommands = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_garbo():
-    if sender in mods:
-        send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
-    else:
-        if cd.cdgarbo == 0:
-            send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
-            cd.cdgarbo = 1
-
-        def cooldown():
-            cd.cdgarbo = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_tag():
-    if sender in mods:
-        send_message(cfg.CHAN, 'HungryTag')
-    else:
-        if cd.cdtagface == 0:
-            send_message(cfg.CHAN, 'HungryTag')
-            cd.cdtagface = 1
-
-        def cooldown():
-            cd.cdtagface = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_faq():
-    if sender in mods:
-        send_message(cfg.CHAN, 'Kappa')
-    else:
-        if cd.cdfaq == 0:
-            send_message(cfg.CHAN, 'Kappa')
-            cd.cdfaq = 1
-
-        def cooldown():
-            cd.cdfaq = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_memes():
-    if sender in mods:
-        send_message(cfg.CHAN, ' ˙͜ >˙ ‿☞')
-    else:
-        if cd.cdmemes == 0:
-            send_message(cfg.CHAN, ' ˙͜ >˙ ‿☞')
-            cd.cdmemes = 1
-
-        def cooldown():
-            cd.cdmemes = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_kirbyskip():
-    if sender in mods:
-        send_message(cfg.CHAN, 'Go fuck yourself!!! 4Head')
-    else:
-        if cd.cdkirby == 0:
-            send_message(cfg.CHAN, 'Go fuck yourself!!! 4Head')
-            cd.cdkirby = 1
-
-        def cooldown():
-            cd.cdkirby = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_uuptime():
-    if sender in mods:
-        r = requests.get('https://decapi.me/twitch/uptime.php?channel=stinkycheeseone890')
-        send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
-    else:
-        if cd.cduuptime == 0:
-            r = requests.get('https://decapi.me/twitch/uptime.php?channel=stinkycheeseone890')
-            send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
-            cd.cduuptime = 1
-
-        def cooldown():
-            cd.cduuptime = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_important():
-    if sender in mods:
-        send_message(cfg.CHAN, 'b r e a k f a s t https://i.imgur.com/IjnhSOH.png')
-    else:
-        if cd.cdimportant == 0:
-            send_message(cfg.CHAN, 'b r e a k f a s t https://i.imgur.com/IjnhSOH.png')
-            cd.cdimportant = 1
-
-        def cooldown():
-            cd.cdimportant = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_candy():
-    if sender in mods:
-        send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' % chr(127852))
-    else:
-        if cd.cdcandy == 0:
-            send_message(cfg.CHAN, '(っ•ᴗ•)っ %s' % chr(127852))
-            cd.cdcandy = 1
-
-        def cooldown():
-            cd.cdcandy = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_pb():
-    if sender in mods:
-        send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
-    else:
-        if cd.cdpb == 0:
-            send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
-            cd.cdpb = 1
-
-        def cooldown():
-            cd.cdpb = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_sellout():
-    if sender in mods:
-        send_message(cfg.CHAN, ' [̲̅$̲̅ ̲̅ ̲̅(̲̅ •ᴗ•̲̅)̲̅ψ̲̅$̲̅]')
-    else:
-        if cd.cdsellout == 0:
-            send_message(cfg.CHAN, ' [̲̅$̲̅ ̲̅ ̲̅(̲̅ •ᴗ•̲̅)̲̅ψ̲̅$̲̅]')
-            cd.cdsellout = 1
-
-        def cooldown():
-            cd.cdsellout = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_keyboard():
-    if sender in mods:
-        send_message(cfg.CHAN, 'Ducky Shine 4 w/ Cherry MX Reds')
-    else:
-        if cd.cdkeyboard == 0:
-            send_message(cfg.CHAN, 'Ducky Shine 4 w/ Cherry MX Reds')
-            cd.cdkeyboard = 1
-
-    def cooldown():
-        cd.cdkeyboard = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
-def command_wannabes():
-    if sender in mods:
-        send_message(cfg.CHAN, 'A group of memers.')
-    else:
-        if cd.cdwannabes == 0:
-            send_message(cfg.CHAN, 'A group of memers.')
-            cd.cdwannabes = 1
-
-    def cooldown():
-        cd.cdwannabes = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
 # --------------------------------------------End Command Functions--------------------------------------------
 
 # ---------------------------------------Start Running Code----------------------------------------------------
@@ -451,7 +242,7 @@ join_channel(cfg.CHAN)
 data = ""
 
 wrsenders = ['']
-logpath = '/home/novamoon/twitch/chat/stinkycheeseone890/'
+logpath = '/home/xxx/twitch/chat/channel/'  # linux path
 if not os.path.isfile(logpath + "log.txt"):
     print("Creating log file for" + cfg.CHAN)
     if not os.path.isdir(logpath): os.makedirs(logpath)
