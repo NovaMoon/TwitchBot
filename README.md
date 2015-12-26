@@ -20,7 +20,7 @@ Simply download the master branch and run bot.py
 You have to edit cfg to your needs!
 
 
-add/remove commands in bot.py - you can safely delete my commands. they are for my own use and not needed for you
+add/remove commands in bot.py - 
 
 
 spl is a starwars spoiler list
