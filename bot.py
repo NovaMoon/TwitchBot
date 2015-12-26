@@ -73,8 +73,7 @@ def parse_message(msg):
     if len(msg) >= 1:
         msg = msg.split(' ')
         options = {'!uptime': command_uptime,
-                   '!wr': command_wr
-                   }
+                   '!wr': command_wr}
 
         if msg[0] in options:
             if '!wr' in [msg[0]]:
