@@ -6,7 +6,6 @@ import requests
 import socket
 import sys
 from threading import Timer
-import spl
 import os
 import time
 import datetime
@@ -451,7 +450,7 @@ join_channel(cfg.CHAN)
 data = ""
 
 wrsenders = ['']
-logpath = '/home/novamoon/twitch/chat/stinkycheeseone890/'
+logpath = '/home/nova/twitchbot/chat/stinkycheeseone890/'
 if not os.path.isfile(logpath + "log.txt"):
     print("Creating log file for" + cfg.CHAN)
     if not os.path.isdir(logpath): os.makedirs(logpath)
@@ -487,10 +486,7 @@ while True:
                         if word in message:
                             send_message(cfg.CHAN, '/ban  %s ' % sender)
                             send_message(cfg.CHAN, 'banned for being a shithead 4Head')
-                    for spoiler in spl.SPLR:
-                        if spoiler in message:
-                            send_message(cfg.CHAN, '/timeout %s 6000' % sender)
-                            send_message(cfg.CHAN, 'No Star Wars spoilers allowed.')
+
                     print(sender + ": " + message)
 
                     with open(logpath + 'log.txt', 'a+') as f:
