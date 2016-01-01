@@ -6,7 +6,6 @@ import requests
 import socket
 import sys
 from threading import Timer
-import spl
 import os
 import time
 import datetime
@@ -277,10 +276,7 @@ while True:
                         if word in message:
                             send_message(cfg.CHAN, '/ban  %s ' % sender)
                             send_message(cfg.CHAN, 'banned for being a shithead 4Head')
-                    for spoiler in spl.SPLR:
-                        if spoiler in message:
-                            send_message(cfg.CHAN, '/timeout %s 6000' % sender)
-                            send_message(cfg.CHAN, 'No Star Wars spoilers allowed.')
+
                     print(sender + ": " + message)
 
                     with open(logpath + 'log.txt', 'a+') as f:
