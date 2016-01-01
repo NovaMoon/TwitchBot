@@ -23,8 +23,6 @@ You have to edit cfg to your needs!
 add/remove commands in bot.py - 
 
 
-spl is a starwars spoiler list
-
 
 
 
