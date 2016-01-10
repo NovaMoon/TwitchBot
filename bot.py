@@ -82,10 +82,10 @@ def parse_message(msg):
                    '!important': command_important,
                    '!wr': command_wr,
                    '!candy': command_candy,
-                   '!pb': command_pb,
                    '!sellout': command_sellout,
                    '!keyboard': command_keyboard,
-                   '!wannabes': command_wannabes}
+                   '!wannabes': command_wannabes,
+                   '!art': command_wall}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg, sender)
@@ -110,7 +110,7 @@ def get_chatters():
         mods = chatters['moderators']
         plebs = chatters['viewers']
     except:
-        print('twitch shat itself DansGame')
+        print('Bad Gateway 502! Check again in 90sec')
     t = Timer(90.0, get_chatters)
     t.start()
 
@@ -210,10 +210,10 @@ def command_wr(msg, sender):
             twr.start()
             cd.cdwr = 1
 
-            def testchange():
+            def cooldown():
                 cd.cdwr = 0
 
-            t = Timer(30.0, testchange)
+            t = Timer(30.0, cooldown)
             t.start()
         else:
             send_message(cfg.CHAN, 'Specify a game.')
@@ -231,20 +231,20 @@ def command_uptime():
             send_message(cfg.CHAN, '420am69pm')
             cd.cduptime = 1
 
-        def testchange():
+        def cooldown():
             cd.cduptime = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
 
 
 def command_commands():
     if sender in mods:
-        send_message(cfg.CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
+        send_message(cfg.CHAN, 'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW')
     else:
         if cd.cdcommands == 0:
             send_message(cfg.CHAN,
-                         'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW ')
+                         'I am a meme bot! Here is a list of available commands : http://pastebin.com/KChvqDGW')
             cd.cdcommands = 1
 
         def cooldown():
@@ -256,10 +256,10 @@ def command_commands():
 
 def command_garbo():
     if sender in mods:
-        send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
+        send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo')
     else:
         if cd.cdgarbo == 0:
-            send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo Garbo ')
+            send_message(cfg.CHAN, 'Garbo Garbo Garbo Garbo Garbo')
             cd.cdgarbo = 1
 
         def cooldown():
@@ -286,10 +286,10 @@ def command_tag():
 
 def command_faq():
     if sender in mods:
-        send_message(cfg.CHAN, 'Kappa')
+        send_message(cfg.CHAN, '42')
     else:
         if cd.cdfaq == 0:
-            send_message(cfg.CHAN, 'Kappa')
+            send_message(cfg.CHAN, '42')
             cd.cdfaq = 1
 
         def cooldown():
@@ -376,21 +376,6 @@ def command_candy():
         t.start()
 
 
-def command_pb():
-    if sender in mods:
-        send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
-    else:
-        if cd.cdpb == 0:
-            send_message(cfg.CHAN, 'Look at the screen and don\'t ask me MingLee')
-            cd.cdpb = 1
-
-        def cooldown():
-            cd.cdpb = 0
-
-        t = Timer(30.0, cooldown)
-        t.start()
-
-
 def command_sellout():
     if sender in mods:
         send_message(cfg.CHAN, ' [̲̅$̲̅ ̲̅ ̲̅(̲̅ •ᴗ•̲̅)̲̅ψ̲̅$̲̅]')
@@ -423,10 +408,10 @@ def command_keyboard():
 
 def command_wannabes():
     if sender in mods:
-        send_message(cfg.CHAN, 'A group of memers.')
+        send_message(cfg.CHAN, 'A group of memers. You can find all of them here! http://www.twitch.tv/team/thewannabes')
     else:
         if cd.cdwannabes == 0:
-            send_message(cfg.CHAN, 'A group of memers.')
+            send_message(cfg.CHAN, 'A group of memers. You can find all of them here! http://www.twitch.tv/team/thewannabes')
             cd.cdwannabes = 1
 
     def cooldown():
@@ -435,6 +420,17 @@ def command_wannabes():
         t = Timer(30.0, cooldown)
         t.start()
 
+
+def command_wall():
+    if sender in mods:
+        send_message(cfg.CHAN, 'cornBLECH cornBLECH cornBLECH cornBLECH cornBLECH cornBLECH')
+        send_message(cfg.CHAN, 'cornBLECH MikuStairs cornBLECH')
+        send_message(cfg.CHAN, 'cornBLECH MikuStairs MikuStairs cornBLECH')
+        send_message(cfg.CHAN, 'cornBLECH MikuStairs MikuStairs MikuStairs cornBLECH')
+        send_message(cfg.CHAN, 'cornBLECH MikuStairs MikuStairs MikuStairs MikuStairs cornBLECH')
+        send_message(cfg.CHAN, 'cornBLECH cornBLECH cornBLECH cornBLECH cornBLECH cornBLECH')
+    else:
+        send_message(cfg.CHAN, 'Mod only you pleb MingLee')
 
 # --------------------------------------------End Command Functions--------------------------------------------
 
@@ -491,7 +487,7 @@ while True:
 
                     with open(logpath + 'log.txt', 'a+') as f:
                         f.write('%s %s: %s\n"' % (now, sender, UnicodeDammit(message).unicode_markup.encode(
-                                'utf8')))  # encode characters like ( •ᴗ•) and wont crash the bot
+                                'utf8')))  # encode characters like ( •ᴗ•) so it wont crash the bot
 
 
 
