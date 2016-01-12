@@ -85,9 +85,13 @@ def parse_message(msg):
                    '!sellout': command_sellout,
                    '!keyboard': command_keyboard,
                    '!wannabes': command_wannabes,
-                   '!art': command_wall}
+                   '!art': command_wall,
+                   '!spaghetti': command_spaghetti,
+                   '!purge' : command_purge}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
+                options[msg[0]](msg, sender)
+            if '!purge' in [msg[0]]:
                 options[msg[0]](msg, sender)
             else:
                 options[msg[0]]()
@@ -420,17 +424,44 @@ def command_wannabes():
         t = Timer(30.0, cooldown)
         t.start()
 
+def command_spaghetti():
+    if sender in mods:
+        send_message(cfg.CHAN, 'Ｓ Ｐ Ａ Ｇ Ｈ Ｅ Ｔ Ｔ Ｉ http://imgur.com/vS9rNnN')
+    else:
+        if cd.cdspaghetti == 0:
+            send_message(cfg.CHAN, 'Ｓ Ｐ Ａ Ｇ Ｈ Ｅ Ｔ Ｔ Ｉ http://imgur.com/vS9rNnN')
+            cd.cdspaghetti = 1
+
+    def cooldown():
+        cd.cdspaghetti = 0
+
+        t = Timer(30.0, cooldown)
+        t.start()
 
 def command_wall():
     if sender in mods:
-        send_message(cfg.CHAN, 'cornBLECH cornBLECH cornBLECH cornBLECH cornBLECH cornBLECH')
-        send_message(cfg.CHAN, 'cornBLECH MikuStairs cornBLECH')
-        send_message(cfg.CHAN, 'cornBLECH MikuStairs MikuStairs cornBLECH')
-        send_message(cfg.CHAN, 'cornBLECH MikuStairs MikuStairs MikuStairs cornBLECH')
-        send_message(cfg.CHAN, 'cornBLECH MikuStairs MikuStairs MikuStairs MikuStairs cornBLECH')
-        send_message(cfg.CHAN, 'cornBLECH cornBLECH cornBLECH cornBLECH cornBLECH cornBLECH')
+        if cd.cdwall == 0:
+            send_message(cfg.CHAN, 'cornBlack cornBlack cornBlack cornBlack cornBlack')
+            send_message(cfg.CHAN, 'cornBlack cornSad cornLove cornSad cornBlack')
+            send_message(cfg.CHAN, 'cornBlack cornLove cornFast cornLove cornBlack')
+            send_message(cfg.CHAN, 'cornBlack cornSad cornLove cornSad cornBlack')
+            send_message(cfg.CHAN, 'cornBlack cornBlack cornBlack cornBlack cornBlack')
+            cd.cdwall = 1
     else:
         send_message(cfg.CHAN, 'Mod only you pleb MingLee')
+
+    def cooldown():
+        cd.cdwall = 0
+
+        t = Timer(120.0, cooldown)
+        t.start()
+
+def command_purge(msg, sender):
+    if sender in mods:
+        send_message(cfg.CHAN, '/purge %s' % msg[1])
+    else:
+        send_message(cfg.CHAN, 'Nope WutFace')
+
 
 # --------------------------------------------End Command Functions--------------------------------------------
 
