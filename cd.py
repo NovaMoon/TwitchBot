@@ -14,3 +14,5 @@ cdsellout = 0
 cdkeyboard = 0
 cdwannabes = 0
 cd = 0
+cdspaghetti = 0
+cdwall = 0
