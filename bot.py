@@ -91,7 +91,7 @@ def parse_message(msg):
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg, sender)
-            if '!purge' in [msg[0]]:
+            elif '!purge' in [msg[0]]:
                 options[msg[0]](msg, sender, mods)
             else:
                 options[msg[0]]()
