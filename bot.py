@@ -87,12 +87,12 @@ def parse_message(msg):
                    '!wannabes': command_wannabes,
                    '!art': command_wall,
                    '!spaghetti': command_spaghetti,
-                   '!purge' : command_purge}
+                   '!purge': command_purge}
         if msg[0] in options:
             if '!wr' in [msg[0]]:
                 options[msg[0]](msg, sender)
             if '!purge' in [msg[0]]:
-                options[msg[0]](msg, sender)
+                options[msg[0]](msg, sender, mods)
             else:
                 options[msg[0]]()
 
@@ -456,12 +456,10 @@ def command_wall():
         t = Timer(120.0, cooldown)
         t.start()
 
-def command_purge(msg, sender):
+def command_purge(msg, sender, mods):
     if sender in mods:
-        send_message(cfg.CHAN, '/purge %s' % msg[1])
-    else:
-        send_message(cfg.CHAN, 'Nope WutFace')
-
+        send_message(cfg.CHAN, '/timeout %s 1' % msg[1])
+        send_message(cfg.CHAN, 'With memes you shall be purged cornBlack (1sec timeout)')
 
 # --------------------------------------------End Command Functions--------------------------------------------
 
