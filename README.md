@@ -9,26 +9,29 @@ Timeout/ban function
 
 Logs the chat
 
-!wr "game" "category" pulls the data from the http://www.speedrun.com/ api!
+!wr "game" "category" pulls the data from the http://www.speedrun.com/ api!  # thanks to Litewarior
 
 
 #HOW-TO
 
-Simply download the master branch and run bot.py
+Download the master branch and run bot.py 
 
 
 You have to edit cfg to your needs!
 
 
-add/remove commands in bot.py - 
+add/remove commands in bot.py 
 
 
+master branch has 2 commands to give you an example how it works. feels free to remove them. 
 
+
+It is not recommended to use dev branch as it has more commands that are channel specific. but feel free to take a look on it
 
 
 # TODO
 
-ALL THE THINGS!
+
 
 
 
