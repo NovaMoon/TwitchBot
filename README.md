@@ -9,7 +9,7 @@ Timeout/ban function
 
 Logs the chat
 
-!wr "game" "category" pulls the data from the http://www.speedrun.com/ api!  # thanks to Litewarior
+!wr "game" "category" pulls the data from the http://www.speedrun.com/ api!  (Thanks to Litewarior!)
 
 
 #HOW-TO
