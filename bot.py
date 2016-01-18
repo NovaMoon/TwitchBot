@@ -113,7 +113,7 @@ def get_chatters():
         mods = chatters['moderators']
         plebs = chatters['viewers']
     except:
-        print('Bad Gateway 502! Check again in 90sec')
+        print('Bad Gateway 502! Check again in 90sec')   # if you get alot of those, don't worry its twitch related and nothing you can do
     t = Timer(90.0, get_chatters)
     t.start()
 
