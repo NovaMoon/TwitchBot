@@ -457,7 +457,7 @@ join_channel(cfg.CHAN)
 data = ""
 
 wrsenders = ['']
-logpath = '/home/nova/twitchbot/chat/stinkycheeseone890/'
+logpath = '/home/nova/twitchbot/chat/stinkycheeseone890/' # linux path for your logfile
 if not os.path.isfile(logpath + "log.txt"):
     print("Creating log file for" + cfg.CHAN)
     if not os.path.isdir(logpath): os.makedirs(logpath)
