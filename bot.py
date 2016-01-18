@@ -91,7 +91,7 @@ def get_chatters():
         global chatters
         global mods
         global plebs
-        response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
+        response = requests.get('https://tmi.twitch.tv/group/user/YourChannelHere/chatters')
         readable = response.text
         chatlist = json.loads(readable)
         chatters = chatlist['chatters']
