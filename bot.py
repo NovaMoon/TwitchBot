@@ -71,7 +71,7 @@ def get_message(msg):
 def parse_message(msg):
     if len(msg) >= 1:
         msg = msg.split(' ')
-        options = {'!uptime': command_uptime,
+        options = {'!uptime': command_uuptime,
                    '!wr': command_wr}
 
         if msg[0] in options:
@@ -91,14 +91,14 @@ def get_chatters():
         global chatters
         global mods
         global plebs
-        response = requests.get('https://tmi.twitch.tv/group/user/channel/chatters')
+        response = requests.get('https://tmi.twitch.tv/group/user/stinkycheeseone890/chatters')
         readable = response.text
         chatlist = json.loads(readable)
         chatters = chatlist['chatters']
         mods = chatters['moderators']
         plebs = chatters['viewers']
     except:
-        print('twitch shat itself DansGame')
+        print('Bad Gateway 502! Check again in 90sec')   # if you get alot of those, don't worry its twitch related and nothing you can do
     t = Timer(90.0, get_chatters)
     t.start()
 
@@ -211,20 +211,21 @@ def wr_remove(sender):
     wrsenders.remove(sender)
 
 
-def command_uptime():
+def command_uuptime():
     if sender in mods:
-        send_message(cfg.CHAN, '420am69pm')
+        r = requests.get('https://decapi.me/twitch/uptime.php?channel=PasteYourChannelHere')
+        send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
     else:
-        if cd.cduptime == 0:
-            send_message(cfg.CHAN, '420am69pm')
-            cd.cduptime = 1
+        if cd.cduuptime == 0:
+            r = requests.get('https://decapi.me/twitch/uptime.php?channel=PasteYourChannelHere')
+            send_message(cfg.CHAN, 'This channel has been live for: %s' % r.text)
+            cd.cduuptime = 1
 
-        def testchange():
-            cd.cduptime = 0
+        def cooldown():
+            cd.cduuptime = 0
 
-        t = Timer(30.0, testchange)
+        t = Timer(30.0, cooldown)
         t.start()
-
 
 # --------------------------------------------End Command Functions--------------------------------------------
 
@@ -240,7 +241,7 @@ join_channel(cfg.CHAN)
 data = ""
 
 wrsenders = ['']
-logpath = '/home/xxx/twitch/chat/channel/'  # linux path
+logpath = '/home/nova/twitchbot/chat/stinkycheeseone890/' # linux path for your logfile
 if not os.path.isfile(logpath + "log.txt"):
     print("Creating log file for" + cfg.CHAN)
     if not os.path.isdir(logpath): os.makedirs(logpath)
@@ -281,7 +282,7 @@ while True:
 
                     with open(logpath + 'log.txt', 'a+') as f:
                         f.write('%s %s: %s\n"' % (now, sender, UnicodeDammit(message).unicode_markup.encode(
-                                'utf8')))  # encode characters like ( •ᴗ•) and wont crash the bot
+                                'utf8')))  # encode characters like ( •ᴗ•) so it wont crash the bot
 
 
 
