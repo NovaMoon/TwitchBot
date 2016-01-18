@@ -1,2 +1,2 @@
-cduptime = 0
+cduuptime = 0
 cdwr = 0
