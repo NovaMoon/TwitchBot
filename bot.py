@@ -1,16 +1,18 @@
 #!/usr/bin/python3.5
-import cd
-import cfg
+import datetime
+import os
 import re
-import requests
 import socket
 import sys
-from threading import Timer
-import os
 import time
-import datetime
+from threading import Timer
+
+import requests
 import simplejson as json
 from bs4 import UnicodeDammit
+
+import cd
+import cfg
 
 sys.dont_write_bytecode = True
 
@@ -98,7 +100,9 @@ def get_chatters():
         mods = chatters['moderators']
         plebs = chatters['viewers']
     except:
-        print('Bad Gateway 502! Check again in 90sec')   # if you get alot of those, don't worry its twitch related and nothing you can do
+        print(
+                'Bad Gateway 502! Check again in 90sec')  # if you get alot of those, don't worry its twitch related and
+        #  nothing you can do
     t = Timer(90.0, get_chatters)
     t.start()
 
@@ -227,6 +231,7 @@ def command_uuptime():
         t = Timer(30.0, cooldown)
         t.start()
 
+
 # --------------------------------------------End Command Functions--------------------------------------------
 
 # ---------------------------------------Start Running Code----------------------------------------------------
@@ -241,7 +246,7 @@ join_channel(cfg.CHAN)
 data = ""
 
 wrsenders = ['']
-logpath = '/home/nova/twitchbot/chat/stinkycheeseone890/' # linux path for your logfile
+logpath = '/home/nova/twitchbot/chat/stinkycheeseone890/'  # linux path for your logfile
 if not os.path.isfile(logpath + "log.txt"):
     print("Creating log file for" + cfg.CHAN)
     if not os.path.isdir(logpath): os.makedirs(logpath)
